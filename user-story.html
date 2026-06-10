@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Story com Critérios de Aceite — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Entrega</div>
+    <h1>User Story com Critérios de Aceite</h1>
+    <p class="page-desc">Escreva histórias que o time de engenharia realmente entende — com o formato certo e exemplos reais.</p>
+  </div>
+  
+
+<h2>O que é uma User Story</h2>
+<p>Uma user story descreve uma funcionalidade do ponto de vista do usuário: <strong>"Como [tipo de usuário], quero [ação], para que [benefício]."</strong> Os critérios de aceite definem com precisão quando essa story está concluída e testada.</p>
+<div class="callout callout-warm"><strong>Erro mais comum:</strong> escrever stories do ponto de vista do sistema. "O sistema deve enviar um email" não é user story — é requisito técnico. Escreva sempre da perspectiva de quem usa o produto. Se você não consegue identificar o usuário, é sinal de que a story ainda não está madura.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para gerar user stories a partir dos requisitos do PRD.</strong> Cole os requisitos funcionais e o contexto do usuário. A IA quebra em stories no formato correto com critérios de aceite estruturados. Você revisa, ajusta o que não reflete o contexto real e complementa com casos de borda que só você conhece.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — gerar user stories de requisitos</div>
+    <div class="prompt-body">Converta os requisitos funcionais abaixo em user stories com critérios de aceite.
+
+Contexto:
+- Produto: [descrição]
+- Persona principal: [nome/perfil do usuário]
+- Requisitos funcionais: [cole os RFs]
+
+Para cada story:
+1. Escreva no formato "Como [usuário], quero [ação], para que [benefício]"
+2. Adicione 2-3 critérios de aceite no formato Given-When-Then
+3. Defina o que está fora do escopo desta story específica
+4. Estime a complexidade (S/M/L) com justificativa
+
+Identifique também: quais stories têm dependência entre si e qual a ordem de implementação recomendada.</div>
+  </div>
+</div>
+
+<h2>Formato Given-When-Then</h2>
+<div class="tpl-block">
+  <div class="tpl-row"><div class="tpl-label">Given (dado que)</div><div class="tpl-value">O contexto inicial — estado do sistema e do usuário antes da ação acontecer</div></div>
+  <div class="tpl-row"><div class="tpl-label">When (quando)</div><div class="tpl-value">A ação específica que o usuário ou o sistema executa naquele momento</div></div>
+  <div class="tpl-row"><div class="tpl-label">Then (então)</div><div class="tpl-value">O resultado observável e verificável que deve acontecer imediatamente após a ação</div></div>
+</div>
+
+<h2>Exemplos preenchidos</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Story 1</span><span class="tpl-step-name">Receber alerta de vencimento de contrato</span></div>
+  <div class="tpl-row"><div class="tpl-label">Story</div><div class="tpl-value">Como gestora de contratos, quero receber um alerta 7 dias antes do vencimento, para que eu tenha tempo de acionar o fornecedor antes que o prazo expire.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critério 1</div><div class="tpl-value"><strong>Given</strong> que tenho um contrato com vencimento em 7 dias e notificações ativas<br><strong>When</strong> o sistema processa os alertas diários às 8h no meu horário<br><strong>Then</strong> recebo um email com: nome do contrato, data de vencimento, dias restantes e link direto para o contrato</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critério 2</div><div class="tpl-value"><strong>Given</strong> que o contrato não foi renovado e faltam 24 horas<br><strong>When</strong> o sistema processa os alertas<br><strong>Then</strong> recebo um alerta adicional com urgência visual no assunto do email ("⚠️ Vence amanhã: [nome]")</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critério 3</div><div class="tpl-value"><strong>Given</strong> que desativei notificações para um contrato específico<br><strong>When</strong> esse contrato se aproxima do vencimento<br><strong>Then</strong> não recebo alertas desse contrato, mas continuo recebendo normalmente dos demais</div></div>
+  <div class="tpl-row"><div class="tpl-label">Fora do escopo</div><div class="tpl-value">Notificação por SMS. Renovação automática. Notificação para outros membros do time. Alertas para contratos já vencidos.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Complexidade</div><div class="tpl-value tpl-positive">M — lógica de agendamento conhecida, dependência: Sendgrid configurado, template aprovado</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Story 2</span><span class="tpl-step-name">Configurar antecedência dos alertas por contrato</span></div>
+  <div class="tpl-row"><div class="tpl-label">Story</div><div class="tpl-value">Como gestora de contratos, quero configurar com quantos dias de antecedência recebo alertas de cada contrato, para ajustar de acordo com a criticidade e o tempo de negociação necessário.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critério 1</div><div class="tpl-value"><strong>Given</strong> que estou nas configurações de um contrato específico<br><strong>When</strong> acesso a opção "Configurar alertas"<br><strong>Then</strong> vejo as opções de 7, 15 e 30 dias com checkboxes (posso selecionar múltiplos)</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critério 2</div><div class="tpl-value"><strong>Given</strong> que alterei a configuração de alertas de um contrato<br><strong>When</strong> salvo as alterações<br><strong>Then</strong> vejo uma confirmação visual e os próximos alertas respeitam a nova configuração</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critério 3</div><div class="tpl-value"><strong>Given</strong> que um contrato não tem configuração personalizada<br><strong>When</strong> o sistema processa alertas<br><strong>Then</strong> usa a configuração padrão da conta (7 dias), sem gerar erro</div></div>
+  <div class="tpl-row"><div class="tpl-label">Complexidade</div><div class="tpl-value tpl-positive">S — configuração simples, sem dependências externas</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para identificar casos de borda que você esqueceu.</strong> Cole suas user stories e critérios de aceite e peça para a IA simular um testador tentando quebrar a feature. Ela vai sugerir cenários de erro, estados inválidos e comportamentos inesperados que você provavelmente não cobriu.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — encontrar casos de borda</div>
+    <div class="prompt-body">Atue como um QA sênior tentando quebrar as user stories abaixo.
+
+Stories e critérios de aceite:
+[cole as stories]
+
+Identifique:
+1. Casos de borda não cobertos pelos critérios de aceite
+2. Estados inválidos ou inesperados do sistema (ex: o que acontece se o usuário não tiver email?)
+3. Condições de corrida ou problemas de concorrência
+4. Cenários de erro que precisam de tratamento explícito
+5. Critérios de aceite ambíguos que podem ser interpretados de formas diferentes por devs diferentes
+
+Para cada problema encontrado, sugira como adicionar ou corrigir o critério de aceite correspondente.</div>
+  </div>
+</div>
+
+<div class="callout callout-teal"><strong>Dica de PM sênior:</strong> antes de escrever a story, pergunte: qual problema essa story resolve? Se não conseguir responder em uma frase, volte para o discovery. Story sem problema claro vira feature órfã que ninguém usa — e ninguém vai te avisar que ninguém usou.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

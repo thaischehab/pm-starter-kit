@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap Trimestral por OKR — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Roadmap</div>
+    <h1>Roadmap Trimestral por OKR</h1>
+    <p class="page-desc">Estruture seu roadmap em torno de objetivos reais — não de uma lista de features sem contexto.</p>
+  </div>
+  
+
+<h2>Por que roadmap por OKR?</h2>
+<p>Um roadmap orientado a features comunica o que você vai construir. Um roadmap por OKR comunica o problema que você vai resolver e como saberá que resolveu. O segundo alinha o time em torno de resultados, não de entregas.</p>
+<div class="callout callout-warm"><strong>Armadilha mais comum:</strong> transformar o roadmap num contrato de entrega. Roadmap é uma hipótese sobre o futuro. Quanto mais longe no tempo, menos certeza. Comunique isso explicitamente — muda completamente a dinâmica de cobrança com stakeholders.</div>
+
+<div class="ai-box" style="border-color:rgba(194,65,12,0.35);background:#fff7ed">
+  <div class="ai-header" style="background:rgba(194,65,12,0.12);border-color:rgba(194,65,12,0.2)">
+    <span style="font-size:18px">&#129302;</span>
+    <span class="ai-header-label" style="color:#c2410c">Roadmap em 20 minutos com IA — o prompt que funciona</span>
+  </div>
+  <div class="ai-tip" style="color:#7c2d12;background:transparent">
+    <strong>A maioria dos PMs pede para a IA "sugerir prioridades". Isso não funciona.</strong><br><br>
+    O que funciona é dar contexto real — estágio da empresa, time disponível, métrica do trimestre — e listar as iniciativas brutas sem filtro. O output vira a base da apresentação para stakeholders. Você refina. Não recria do zero.<br><br>
+    <em>O segredo não é a ferramenta. É o prompt.</em>
+  </div>
+  <div class="prompt-block" style="margin:0 18px 16px">
+    <div class="prompt-label">Prompt — roadmap estruturado por OKR em 20 minutos</div>
+    <div class="prompt-body">Você é um GPM sênior com 10 anos de experiência em produtos SaaS B2B.
+
+Contexto do meu produto:
+- Estágio: <span class="prompt-var">[MVP / crescimento / escala]</span>
+- Time de engenharia: <span class="prompt-var">[X pessoas, Y sprints por trimestre]</span>
+- Métrica principal do trimestre: <span class="prompt-var">[ex: reduzir churn de 8% para 5%]</span>
+- Maior problema do usuário hoje: <span class="prompt-var">[descreva em 2 linhas]</span>
+
+Minhas iniciativas brutas (sem filtro, em qualquer ordem):
+<span class="prompt-var">[liste tudo que está na sua cabeça ou no backlog — pode ser bagunçado]</span>
+
+Por favor:
+1. Estruture essas iniciativas em KRs para o trimestre, conectando cada uma ao objetivo principal
+2. Para cada KR, indique qual iniciativa é Must Have, Should Have e Could Have
+3. Estime a capacidade necessária e aponte o que provavelmente não cabe no trimestre
+4. Identifique dependências entre iniciativas que podem criar gargalos
+5. Documente o "Won't do" com justificativa — para eu usar na conversa com stakeholders
+
+Formato: estrutura de roadmap pronta para apresentar, com linguagem orientada a resultado (não a feature).</div>
+  </div>
+  <div class="ai-tip" style="color:#7c2d12;background:transparent;border-top:1px solid rgba(194,65,12,0.15)">
+    <strong>Como usar:</strong> preencha o contexto e cole suas iniciativas brutas — mesmo que estejam desorganizadas. O output já vira um rascunho de apresentação. Você valida com o time, ajusta os números e apresenta para a liderança. O que antes levava um dia, leva 20 minutos.
+  </div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para identificar gaps e conflitos no seu roadmap.</strong> Depois de rascunhar o trimestre, cole as iniciativas e o OKR principal numa IA e peça uma revisão crítica. Ela vai apontar itens que provavelmente não contribuem para o objetivo, riscos que você não viu e o que cortar se o escopo precisar reduzir 30%.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — revisão crítica do roadmap</div>
+    <div class="prompt-body">Revise criticamente meu roadmap como um GPM experiente.
+
+OKR do trimestre: [cole o objetivo e os KRs]
+
+Iniciativas planejadas:
+[liste as iniciativas com esforço estimado]
+
+Analise:
+1. Quais iniciativas provavelmente não contribuem para o OKR principal?
+2. O que pode estar faltando — dívida técnica, segurança, retenção?
+3. Alguma iniciativa tem risco técnico alto que pode comprometer todo o trimestre?
+4. O que você cortaria se precisasse reduzir o escopo em 30%?
+5. Quais dependências entre iniciativas podem criar gargalos?</div>
+  </div>
+</div>
+
+<h2>Template preenchido — Q3 2025 · SaaS B2B</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Objetivo do trimestre</span></div>
+  <div class="tpl-row"><div class="tpl-label">Objetivo</div><div class="tpl-value">Aumentar retenção de clientes SMB de 72% para 82% em 90 dias, reduzindo o tempo até o primeiro valor (TTV) de 14 para 7 dias.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Por que agora</div><div class="tpl-value">Churn de SMB subiu 8pp no último trimestre. Entrevistas de saída apontam "não vi valor rápido o suficiente" como razão principal em 7 de 10 casos.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">KR1 · Mês 1</span><span class="tpl-step-name">Reduzir fricção no onboarding</span></div>
+  <div class="tpl-row"><div class="tpl-label">Iniciativa</div><div class="tpl-value">Wizard de configuração guiado — acompanha o usuário nas 3 ações críticas do produto nas primeiras 24h</div></div>
+  <div class="tpl-row"><div class="tpl-label">Meta</div><div class="tpl-value">60% dos novos usuários completam a configuração em menos de 30 min (hoje: 35%)</div></div>
+  <div class="tpl-row"><div class="tpl-label">Esforço</div><div class="tpl-value">3 devs · 2 semanas · dependência: aprovação do fluxo com design</div></div>
+  <div class="tpl-row"><div class="tpl-label">Risco</div><div class="tpl-value tpl-neutral">Médio — "ação crítica" precisa de consenso com CS antes de definir o escopo do wizard</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">KR2 · Mês 2</span><span class="tpl-step-name">Aumentar engajamento na 2ª semana</span></div>
+  <div class="tpl-row"><div class="tpl-label">Iniciativa 1</div><div class="tpl-value">Painel de analytics — visão consolidada de contratos, alertas de vencimento e ações pendentes</div></div>
+  <div class="tpl-row"><div class="tpl-label">Iniciativa 2</div><div class="tpl-value">Notificações inteligentes — detecta contratos próximos do vencimento e notifica proativamente</div></div>
+  <div class="tpl-row"><div class="tpl-label">Meta</div><div class="tpl-value">DAU/MAU de 0.18 para 0.28 entre usuários com mais de 14 dias de conta</div></div>
+  <div class="tpl-row"><div class="tpl-label">Risco</div><div class="tpl-value tpl-negative">Alto — iniciativa 2 tem incerteza técnica. Se bloquear, downgrade para Should Have.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">KR3 · Mês 3</span><span class="tpl-step-name">Fechar gaps de retenção enterprise</span></div>
+  <div class="tpl-row"><div class="tpl-label">Iniciativa 1</div><div class="tpl-value">SSO e permissões por papel — bloqueador para 4 clientes enterprise identificados no churn</div></div>
+  <div class="tpl-row"><div class="tpl-label">Iniciativa 2</div><div class="tpl-value">Exportação de relatórios em PDF — solicitação recorrente nas entrevistas de churn</div></div>
+  <div class="tpl-row"><div class="tpl-label">Meta</div><div class="tpl-value">Reativar 2 dos 4 clientes enterprise que cancelaram citando "falta de funcionalidades de segurança"</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Won't do Q3 — fora do escopo</span></div>
+  <div class="tpl-row"><div class="tpl-label">App mobile</div><div class="tpl-value">Depende de validação de demanda ainda não concluída</div></div>
+  <div class="tpl-row"><div class="tpl-label">Integração ERP</div><div class="tpl-value">Esforço desproporcional para o volume de clientes que solicitaram (3 de 200)</div></div>
+  <div class="tpl-row"><div class="tpl-label">Módulo financeiro</div><div class="tpl-value">Próxima aposta estratégica — entra no planejamento do Q4</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para montar a argumentação do roadmap para stakeholders.</strong> Descreva quais iniciativas foram priorizadas, quais ficaram de fora e por quê. A IA ajuda a estruturar a comunicação de forma que o stakeholder entenda o trade-off sem precisar de uma reunião de 2 horas.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — comunicar roadmap para liderança</div>
+    <div class="prompt-body">Preciso apresentar meu roadmap para [cargo/audiência].
+
+Contexto:
+- OKR do trimestre: [objetivo e KRs]
+- Iniciativas priorizadas: [liste com justificativa]
+- O que ficou de fora: [liste com motivo]
+- Capacidade do time: [X devs, Y sprints]
+
+Escreva uma apresentação em formato de texto (para Slack ou email) que:
+1. Comunique o objetivo do trimestre em 1 frase
+2. Explique as 3 principais iniciativas e por que foram escolhidas
+3. Deixe claro o que não entra e por quê (sem soar defensivo)
+4. Termine com o que você precisa da liderança para executar
+
+Tom: direto, orientado a resultado, sem jargão.</div>
+  </div>
+</div>
+
+<div class="callout callout-teal"><strong>Dica:</strong> documente o "fora do escopo" com o mesmo rigor do que está dentro. Evita que stakeholders assumam que algo está incluído e cria conversas honestas sobre prioridades antes do trimestre começar.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

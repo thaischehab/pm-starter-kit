@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompts: Síntese de Entrevistas com IA — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Prompts IA</div>
+    <h1>Prompts: Síntese de Entrevistas com IA</h1>
+    <p class="page-desc">Transforme notas brutas em insights acionáveis em menos de 2 horas — com IA como co-piloto.</p>
+  </div>
+  
+
+<h2>Como usar IA na síntese de pesquisa</h2>
+<p>A maior inimiga da pesquisa qualitativa é o tempo: entre conduzir a entrevista, transcrever, anotar e sintetizar, horas se transformam em dias — e os insights chegam tarde demais para influenciar decisões. IA não substitui o julgamento do pesquisador, mas reduz drasticamente o tempo de processamento.</p>
+<div class="callout callout-teal"><strong>Princípio fundamental:</strong> use IA para organizar e sintetizar, não para interpretar. A interpretação — decidir o que é relevante, o que é viés do entrevistado, o que conecta com o contexto do produto — é trabalho seu. A IA vai te dar um rascunho excelente; você vai transformá-lo em insight real.</div>
+
+<h2>Prompt 1 — Síntese de uma entrevista</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: logo após conduzir a entrevista</span></div>
+  <div class="ai-tip">Cole a transcrição ou suas notas brutas e execute esse prompt em até 2 horas após a entrevista, enquanto o contexto ainda está fresco. Use o output como base para suas anotações — não como substituto.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Síntese de entrevista individual</div>
+    <div class="prompt-body">Você é um pesquisador de UX sênior analisando uma entrevista de discovery de produto.
+
+Transcrição / notas:
+<span class="prompt-var">[cole a transcrição ou notas brutas]</span>
+
+Contexto do produto: <span class="prompt-var">[produto e problema investigado]</span>
+Hipótese que eu queria testar: <span class="prompt-var">[descreva a hipótese]</span>
+
+Por favor, extraia:
+1. Os 3-5 principais problemas mencionados (com citação direta quando possível)
+2. Comportamento atual — como a pessoa resolve o problema hoje
+3. Motivação real — o que ela quer alcançar (o "job to be done" por trás do pedido)
+4. Momentos de surpresa — algo que você não esperava ouvir
+5. A hipótese foi confirmada, contradita ou é inconclusiva? Por quê?
+6. 3 perguntas para investigar nas próximas entrevistas
+
+Use as palavras do entrevistado quando possível. Seja específico.</div>
+  </div>
+</div>
+
+<h2>Prompt 2 — Padrões entre múltiplas entrevistas</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: após 5+ entrevistas do mesmo segmento</span></div>
+  <div class="ai-tip">Com 5 ou mais entrevistas sintetizadas, use esse prompt para identificar os padrões que aparecem consistentemente. Isso transforma observações individuais em insights de produto acionáveis.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Análise de padrões entre entrevistas</div>
+    <div class="prompt-body">Analisei <span class="prompt-var">[X]</span> entrevistas com <span class="prompt-var">[perfil dos usuários]</span>.
+
+Resumos das entrevistas:
+Entrevista 1 - <span class="prompt-var">[perfil]</span>: <span class="prompt-var">[resumo]</span>
+Entrevista 2 - <span class="prompt-var">[perfil]</span>: <span class="prompt-var">[resumo]</span>
+Entrevista 3 - <span class="prompt-var">[perfil]</span>: <span class="prompt-var">[resumo]</span>
+
+Por favor:
+1. Identifique padrões que aparecem em 3+ entrevistas (com frequência: X de Y)
+2. Liste contradições ou divergências significativas entre entrevistados
+3. Classifique os problemas por frequência e intensidade emocional
+4. Identifique segmentos: os usuários têm necessidades distintas entre si?
+5. Sugira os 3 problemas mais promissores para resolver, com justificativa
+6. O que ainda não sabemos e precisamos investigar?</div>
+  </div>
+</div>
+
+<h2>Prompt 3 — Mapa de empatia</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: para apresentar pesquisa ao time de design e engenharia</span></div>
+  <div class="ai-tip">O mapa de empatia é uma das melhores ferramentas para criar empatia com o usuário em times técnicos. Use IA para gerar o rascunho e apresente visualmente numa sessão de alinhamento — funciona melhor que qualquer relatório de pesquisa.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Gerar mapa de empatia</div>
+    <div class="prompt-body">Com base na transcrição abaixo, crie um mapa de empatia detalhado:
+
+<span class="prompt-var">[cole a transcrição ou notas]</span>
+
+Organize em quatro quadrantes:
+- O que DIZ: citações diretas sobre o problema e o processo
+- O que FAZ: comportamentos concretos observados ou descritos
+- O que PENSA: preocupações, medos e julgamentos não ditos explicitamente
+- O que SENTE: emoções identificadas no tom, nas palavras e nas pausas
+
+E adicione:
+- DORES: frustrações, obstáculos, riscos que ela quer evitar
+- GANHOS: o que ela quer alcançar, como seria o sucesso para ela
+
+Use linguagem na primeira pessoa ("Eu me preocupo com...", "Eu sinto que...")
+Baseie cada item em evidência da transcrição — nada inventado.</div>
+  </div>
+</div>
+
+<h2>Prompt 4 — Validar hipótese com evidências</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: antes de levar insights para o time ou para priorização</span></div>
+  <div class="ai-tip">Use esse prompt para ser honesto consigo mesmo sobre o nível de confiança da sua hipótese antes de levá-la para o roadmap. É fácil ver apenas o que confirma o que já acreditamos — a IA ajuda a buscar ativamente as contradições.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Avaliação de hipótese com evidências</div>
+    <div class="prompt-body">Hipótese que quero validar:
+<span class="prompt-var">[descreva a hipótese de produto]</span>
+
+Entrevistas realizadas:
+<span class="prompt-var">[cole os resumos das entrevistas]</span>
+
+Por favor:
+1. As entrevistas SUPORTAM, CONTRADIZEM ou são NEUTRAS em relação à hipótese?
+2. Cite evidências específicas para cada posição (com transcrição quando possível)
+3. Existe viés de confirmação? Procuro ativamente evidências contrárias?
+4. O que ainda não foi explorado e precisaria de mais pesquisa antes de decidir?
+5. Nível de confiança para agir: ALTA (pode entrar no roadmap) / MÉDIA (validar mais antes) / BAIXA (não suficiente)
+6. Se BAIXA ou MÉDIA: quais as próximas 3 perguntas a investigar?</div>
+  </div>
+</div>
+
+<div class="callout callout-teal"><strong>Dica de fluxo:</strong> conduza a entrevista → execute o Prompt 1 em até 2h → após 5 entrevistas execute o Prompt 2 → use o Prompt 4 antes de levar para o roadmap. Esse ciclo reduz o tempo de discovery em 60% sem comprometer a qualidade dos insights.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa de Jornada do Usuário — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Discovery</div>
+    <h1>Mapa de Jornada do Usuário</h1>
+    <p class="page-desc">Visualize a experiência completa do seu usuário — do primeiro contato ao resultado final.</p>
+  </div>
+  
+
+<h2>O que é e por que importa</h2>
+<p>Um mapa de jornada documenta a experiência do usuário ao longo do tempo, revelando pontos de fricção, oportunidades e emoções em cada etapa. É uma das ferramentas mais poderosas do discovery porque força você a sair da perspectiva do produto e entrar na perspectiva da pessoa real.</p>
+<div class="callout callout-warm"><strong>Quando usar:</strong> antes de definir qualquer solução. Se você ainda não mapeou a jornada atual do usuário, você está construindo no escuro. O mapa mais valioso não é o da jornada ideal — é o da jornada atual, com todos os atritos.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para acelerar a síntese, não para substituir a pesquisa.</strong> Depois de conduzir entrevistas ou observar usuários, cole as notas brutas numa IA e peça para ela identificar padrões de emoção, comportamento e frustração por etapa da jornada. O resultado é um rascunho que você valida — não uma conclusão definitiva.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — extrair jornada de notas de entrevista</div>
+    <div class="prompt-body">Você é um pesquisador de UX sênior.
+
+Abaixo estão notas brutas de [X] entrevistas com usuários de [produto/serviço]:
+
+[cole as notas aqui]
+
+Por favor:
+1. Identifique as principais etapas da jornada do usuário (do primeiro contato ao resultado final)
+2. Para cada etapa, liste: o que o usuário faz, o que pensa, como se sente e onde trava
+3. Destaque os 3 maiores pontos de fricção com citações diretas
+4. Sugira oportunidades de produto para cada ponto de fricção
+
+Formato: tabela por etapa, com colunas: Faz | Pensa | Sente | Fricção | Oportunidade</div>
+  </div>
+</div>
+
+<h2>Template preenchido — SaaS B2B</h2>
+<p><strong>Persona:</strong> Ana, 34 anos, Gerente de RH em empresa de 200 funcionários. Primeira contratação de ferramenta de gestão de ponto.</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Etapa 1</span><span class="tpl-step-name">Descoberta</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que faz</div><div class="tpl-value">Pesquisa no Google, pede indicação no LinkedIn, assiste a webinar sobre ferramentas de RH.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que pensa</div><div class="tpl-value">"Preciso de algo que não dê trabalho para implantar e que a equipe aceite usar."</div></div>
+  <div class="tpl-row"><div class="tpl-label">Emoção</div><div class="tpl-value tpl-neutral">&#128528; Neutro — explorando opções, sem urgência imediata</div></div>
+  <div class="tpl-row"><div class="tpl-label">Ponto de dor</div><div class="tpl-value">Excesso de opções. Difícil comparar funcionalidades entre sistemas sem testar cada um.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Oportunidade</div><div class="tpl-value">Aparecer nas buscas certas. Ter comparativo claro com concorrentes na landing page.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Etapa 2</span><span class="tpl-step-name">Avaliação</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que faz</div><div class="tpl-value">Assiste ao demo, testa trial, prepara proposta para aprovação do diretor financeiro.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que pensa</div><div class="tpl-value">"Vai integrar com nosso sistema de folha? Vou conseguir configurar sozinha sem suporte?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">Emoção</div><div class="tpl-value tpl-negative">&#128543; Ansioso — medo de escolher errado e precisar trocar em 6 meses</div></div>
+  <div class="tpl-row"><div class="tpl-label">Ponto de dor</div><div class="tpl-value">Trial muito limitado. Demo genérico que não mostra o caso de uso dela especificamente.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Oportunidade</div><div class="tpl-value">Trial completo por 14 dias. Demo personalizado por segmento e tamanho de empresa.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Etapa 3</span><span class="tpl-step-name">Onboarding</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que faz</div><div class="tpl-value">Configura empresa, importa funcionários, define regras de ponto, treina o time.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que pensa</div><div class="tpl-value">"Por que não tem importação por planilha? Vou levar dias para configurar isso manualmente."</div></div>
+  <div class="tpl-row"><div class="tpl-label">Emoção</div><div class="tpl-value tpl-negative">&#128544; Frustrado — processo mais difícil do que o esperado</div></div>
+  <div class="tpl-row"><div class="tpl-label">Ponto de dor</div><div class="tpl-value">Configuração manual demorada. Documentação incompleta. Tempo de resposta do suporte alto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Oportunidade</div><div class="tpl-value">Wizard guiado de configuração. Importação via planilha. CS ativo nos primeiros 7 dias.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Etapa 4</span><span class="tpl-step-name">Uso recorrente</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que faz</div><div class="tpl-value">Fecha folha mensalmente, gera relatórios, responde dúvidas do time, faz ajustes pontuais.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que pensa</div><div class="tpl-value">"Isso me poupou 8 horas esse mês. Mas precisava de um relatório que o sistema não gera."</div></div>
+  <div class="tpl-row"><div class="tpl-label">Emoção</div><div class="tpl-value tpl-positive">&#128522; Satisfeito — vendo valor real, mas com frustrações pontuais</div></div>
+  <div class="tpl-row"><div class="tpl-label">Ponto de dor</div><div class="tpl-value">Relatórios pouco flexíveis. Ausência de integração com o sistema contábil atual.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Oportunidade</div><div class="tpl-value">Relatórios customizáveis. Integração nativa com ERPs populares no mercado brasileiro.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para identificar padrões emocionais entre múltiplos usuários.</strong> Cole os resumos de 5+ entrevistas e peça para a IA mapear como a emoção evolui ao longo da jornada. Isso revela se o problema é pontual (um usuário específico) ou sistêmico (todos travam no mesmo ponto).</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — comparar emoções entre usuários</div>
+    <div class="prompt-body">Abaixo estão resumos de [X] entrevistas com usuários de [produto]:
+
+[cole os resumos]
+
+Para cada etapa da jornada (descoberta, avaliação, onboarding, uso recorrente):
+1. Qual a emoção predominante entre os usuários?
+2. Quais etapas geram mais frustração? Por quê?
+3. Existe algum padrão de "momento de virada" — quando o usuário vai de frustrado para satisfeito?
+4. Quais etapas têm maior variação emocional entre usuários diferentes?</div>
+  </div>
+</div>
+
+<h2>Como usar este template na prática</h2>
+<p>Substitua os dados da persona e as etapas pela jornada real do seu usuário. As informações devem vir de entrevistas e observação — nunca de suposições internas. Cada etapa deve responder: o que o usuário faz, pensa, sente, onde trava e o que você pode fazer a respeito.</p>
+<div class="callout callout-teal"><strong>Dica:</strong> compartilhe o mapa de jornada com o time de engenharia e design antes de escrever qualquer requisito. Ele cria empatia com o usuário e alinha o time sobre qual problema está sendo resolvido.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

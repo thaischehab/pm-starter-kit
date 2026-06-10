@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompts: Gerador de Hipóteses de Produto — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Prompts IA</div>
+    <h1>Prompts: Gerador de Hipóteses de Produto</h1>
+    <p class="page-desc">Transforme dados e observações em hipóteses testáveis — e estruture experimentos com IA como co-piloto.</p>
+  </div>
+  
+
+<h2>O que é uma hipótese de produto</h2>
+<p>Uma hipótese de produto é uma afirmação testável sobre o comportamento do usuário ou o impacto de uma mudança no produto. O formato clássico é: <em>"Se [intervenção], então [resultado esperado], porque [justificativa baseada em dados]."</em></p>
+<div class="callout callout-teal"><strong>Hipótese boa é falsificável.</strong> "Os usuários querem melhor experiência" não é hipótese — é opinião. "Se reduzirmos o onboarding de 8 para 4 passos, a taxa de conclusão aumentará em pelo menos 20% em 30 dias" é uma hipótese válida porque tem intervenção clara, resultado mensurável e prazo definido.</div>
+
+<h2>Prompt 1 — Gerar hipóteses a partir de dados</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: você tem dados mas não sabe o que priorizar investigar</span></div>
+  <div class="ai-tip">Descreva os dados que você tem — quantitativos (analytics, funil, métricas) e qualitativos (feedbacks, entrevistas) — e peça para a IA transformar em hipóteses testáveis. Você vai receber mais hipóteses do que consegue testar: priorize as que têm maior impacto potencial e maior confiança baseada nos dados que você já tem.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Gerador de hipóteses</div>
+    <div class="prompt-body">Sou PM de <span class="prompt-var">[produto]</span> e tenho os seguintes dados:
+
+Dados quantitativos: <span class="prompt-var">[ex: 60% abandonam no passo 3 do onboarding; DAU/MAU = 0.18]</span>
+Dados qualitativos: <span class="prompt-var">[ex: 5 usuários mencionaram confusão com a configuração inicial]</span>
+Métrica principal que quero mover: <span class="prompt-var">[ex: reduzir churn de 8% para 5%]</span>
+Contexto: <span class="prompt-var">[estágio da empresa, perfil do usuário, restrições]</span>
+
+Gere 6-8 hipóteses no formato:
+"Se [intervenção específica], então [resultado mensurável com número], porque [justificativa baseada nos dados acima]."
+
+Para cada hipótese:
+- Nível de confiança: ALTO / MÉDIO / BAIXO com base nos dados fornecidos
+- Como eu testaria isso com o menor esforço possível
+- O que precisaria medir para validar ou refutar
+- Risco: o que pode dar errado se a hipótese estiver errada</div>
+  </div>
+</div>
+
+<h2>Prompt 2 — Explorar oportunidades de produto</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: discovery exploratório, sem problema específico definido ainda</span></div>
+  <div class="ai-tip">Use quando você sabe que tem um problema de retenção, engajamento ou conversão mas ainda não sabe onde focar. A IA ajuda a mapear o espaço de oportunidades antes de você se comprometer com uma direção específica.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Exploração de oportunidades</div>
+    <div class="prompt-body">Produto: <span class="prompt-var">[descrição]</span>
+Segmento: <span class="prompt-var">[perfil do usuário principal]</span>
+Métrica que queremos mover: <span class="prompt-var">[ex: retenção em 30 dias]</span>
+O que já sabemos sobre o comportamento atual: <span class="prompt-var">[dados e observações]</span>
+
+Ajude-me a mapear oportunidades respondendo:
+1. Quais "jobs to be done" esse usuário tem que ainda não estamos resolvendo bem?
+2. Onde na jornada os usuários provavelmente têm mais fricção oculta?
+3. Quais comportamentos dos usuários de maior sucesso poderíamos tentar replicar nos demais?
+4. Que mudança poderia reduzir o esforço do usuário pela metade em alguma etapa crítica?
+5. Que problema adjacente nosso produto não resolve e que esse usuário provavelmente tem?
+6. Quais segmentos dentro da nossa base podem ter necessidades radicalmente diferentes?
+
+Para cada oportunidade identificada, sugira como eu poderia validá-la rapidamente.</div>
+  </div>
+</div>
+
+<h2>Prompt 3 — Estruturar um experimento</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: você tem uma hipótese e quer desenhar o experimento certo</span></div>
+  <div class="ai-tip">O maior erro em experimentos de produto é não definir os critérios de sucesso e fracasso antes de começar. A IA ajuda a estruturar o experimento de forma rigorosa — incluindo o que você vai fazer se o resultado for ambíguo.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Estruturar experimento</div>
+    <div class="prompt-body">Quero testar a seguinte hipótese:
+<span class="prompt-var">[descreva a hipótese no formato "Se... então... porque..."]</span>
+
+Contexto:
+- Volume de usuários elegíveis: <span class="prompt-var">[ex: 3.000/mês]</span>
+- Métrica principal: <span class="prompt-var">[o que vou medir e como]</span>
+- Duração máxima: <span class="prompt-var">[ex: 4 semanas]</span>
+- Restrições: <span class="prompt-var">[esforço de eng, riscos, sazonalidade]</span>
+
+Estruture o experimento com:
+1. Definição do grupo de controle e grupo de teste
+2. Mudança mínima para testar a hipótese (evitar over-engineering)
+3. Tamanho de amostra necessário para 80% de poder estatístico
+4. Critérios claros de SUCESSO e FRACASSO definidos antes de começar
+5. Critério de parada antecipada (quando parar se o resultado for negativo?)
+6. O que fazer se o resultado for positivo / negativo / inconclusivo</div>
+  </div>
+</div>
+
+<h2>Prompt 4 — Análise de concorrentes para discovery</h2>
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">Quando usar: início de discovery ou avaliação de nova oportunidade</span></div>
+  <div class="ai-tip">Use como ponto de partida para pesquisa secundária — não como fonte definitiva. As informações da IA sobre concorrentes podem estar desatualizadas. Valide o que importa diretamente nas fontes (sites, reviews, LinkedIn, G2, Capterra).</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Análise de concorrentes</div>
+    <div class="prompt-body">Estou fazendo discovery para um produto de <span class="prompt-var">[categoria]</span>.
+
+Concorrentes que conheço: <span class="prompt-var">[liste]</span>
+Problema que investigamos: <span class="prompt-var">[descrição]</span>
+Segmento: <span class="prompt-var">[perfil do usuário]</span>
+
+Com base no teu conhecimento do mercado:
+1. Quais abordagens os concorrentes usam para resolver esse problema?
+2. Que lacunas ou pontos fracos são comuns nessa categoria de produto?
+3. Quais reclamações aparecem com mais frequência em reviews de produtos similares?
+4. Que diferenciação seria difícil de copiar e sustentável a longo prazo?
+5. Que tendências do mercado ou mudanças tecnológicas devo considerar?
+6. Quais segmentos estão sub-atendidos nessa categoria?
+
+Avise quando alguma informação pode estar desatualizada e sugira como validar.</div>
+  </div>
+</div>
+
+<div class="callout callout-teal"><strong>Dica de fluxo:</strong> use o Prompt 2 para mapear oportunidades → Prompt 1 para transformar oportunidades em hipóteses → Prompt 3 para estruturar o experimento → Prompt 4 para contextualizar no mercado. Esse ciclo leva menos de 2 horas e estrutura um discovery que antes levaria dias.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

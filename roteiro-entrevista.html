@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiro de Entrevista de Discovery — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Discovery</div>
+    <h1>Roteiro de Entrevista de Discovery</h1>
+    <p class="page-desc">Perguntas estruturadas que desbloqueiam o que o usuário realmente pensa — não o que ele acha que você quer ouvir.</p>
+  </div>
+  
+
+<h2>Antes de começar</h2>
+<div class="callout callout-warm"><strong>Regra de ouro:</strong> você está aqui para aprender, não para validar. Se durante a entrevista você se pegar querendo convencer o usuário de algo, pare. Você saiu do modo discovery e entrou no modo vendas. Reoriente.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para preparar o roteiro antes da entrevista.</strong> Descreva o contexto do produto, o perfil do entrevistado e a hipótese que você quer investigar. A IA sugere perguntas abertas que você não teria pensado — e você escolhe as melhores. Nunca use o roteiro gerado direto, sem revisar.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — gerar roteiro personalizado</div>
+    <div class="prompt-body">Vou conduzir uma entrevista de discovery de produto.
+
+Contexto:
+- Produto: [descreva brevemente o produto]
+- Perfil do entrevistado: [cargo, empresa, contexto]
+- Hipótese que quero investigar: [descreva a hipótese]
+- Etapa do ciclo do usuário: [ex: recém chegou, usuário ativo há 6 meses, churned]
+
+Gere um roteiro de entrevista com:
+1. Pergunta de aquecimento (1)
+2. Perguntas de contexto e rotina (3-4)
+3. Perguntas de aprofundamento no problema (4-5)
+4. Perguntas sobre comportamento e ferramentas atuais (2-3)
+5. Pergunta de encerramento
+
+Para cada pergunta, explique por que ela é importante e o que você quer descobrir com ela.
+Use apenas perguntas abertas — nunca "sim ou não".</div>
+  </div>
+</div>
+
+<h2>Estrutura completa do roteiro</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Abertura</span><span class="tpl-step-name">5 minutos — criar conforto</span></div>
+  <div class="tpl-row"><div class="tpl-label">Contexto</div><div class="tpl-value">Explique que não há respostas certas ou erradas, que você quer entender a experiência real da pessoa. Peça autorização para gravar.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Aquecimento</div><div class="tpl-value">"Me conta um pouco sobre o seu dia a dia no trabalho. O que ocupa mais o seu tempo atualmente?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">Por que funciona</div><div class="tpl-value">Deixa o entrevistado à vontade falando sobre algo que ele domina, antes de entrar no assunto principal.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Bloco 1</span><span class="tpl-step-name">Contexto e rotina — 10 minutos</span></div>
+  <div class="tpl-row"><div class="tpl-label">P1</div><div class="tpl-value">"Me descreve como você faz [processo relevante] hoje, do início ao fim."</div></div>
+  <div class="tpl-row"><div class="tpl-label">P2</div><div class="tpl-value">"Qual parte desse processo você acha mais trabalhosa ou demorada? Por quê?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P3</div><div class="tpl-value">"Com que frequência você precisa fazer isso? Me dá um exemplo recente que aconteceu."</div></div>
+  <div class="tpl-row"><div class="tpl-label">P4</div><div class="tpl-value">"Quem mais está envolvido nesse processo com você? Como vocês dividem as tarefas?"</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Bloco 2</span><span class="tpl-step-name">Aprofundamento no problema — 15 minutos</span></div>
+  <div class="tpl-row"><div class="tpl-label">P5</div><div class="tpl-value">"Me conta sobre a última vez que você teve uma dificuldade com isso. O que aconteceu exatamente?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P6</div><div class="tpl-value">"O que você fez para resolver? Funcionou? O que você mudaria se pudesse?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P7</div><div class="tpl-value">"Se você pudesse mudar uma coisa nesse processo amanhã, o que seria?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P8</div><div class="tpl-value">"Qual seria o impacto real se isso fosse resolvido? Para você, para o time, para o negócio?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">Dica</div><div class="tpl-value">Sempre que o usuário mencionar algo interessante, aprofunde: <em>"Me conta mais sobre isso"</em> ou <em>"O que você quis dizer com X?"</em> — nunca siga em frente sem explorar.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Bloco 3</span><span class="tpl-step-name">Ferramentas e comportamento atual — 10 minutos</span></div>
+  <div class="tpl-row"><div class="tpl-label">P9</div><div class="tpl-value">"Quais ferramentas você usa hoje para lidar com esse processo? Me mostra se puder."</div></div>
+  <div class="tpl-row"><div class="tpl-label">P10</div><div class="tpl-value">"O que você mais gosta nessas ferramentas? O que mais te incomoda?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P11</div><div class="tpl-value">"Você já tentou resolver isso de outra forma antes? O que você fez e o que aconteceu?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P12</div><div class="tpl-value">"Quanto tempo por semana você estima que gasta nisso hoje? Parece muito ou normal para você?"</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Encerramento</span><span class="tpl-step-name">5 minutos</span></div>
+  <div class="tpl-row"><div class="tpl-label">P13</div><div class="tpl-value">"Tem alguma coisa que você esperava que eu perguntasse e não perguntei?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P14</div><div class="tpl-value">"Tem alguém que você acha que eu deveria conversar sobre esse tema?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">Fechamento</div><div class="tpl-value">Agradeça. Explique o que acontece depois. Pergunte se pode entrar em contato novamente com dúvidas pontuais.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para sintetizar a entrevista logo depois de conduzida.</strong> Cole a transcrição ou suas notas brutas e peça um resumo estruturado antes que os detalhes se percam na memória. Faça isso em no máximo 2 horas após a entrevista.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — sintetizar entrevista em 5 minutos</div>
+    <div class="prompt-body">Abaixo estão minhas notas brutas de uma entrevista de discovery:
+
+[cole as notas ou transcrição]
+
+Contexto do produto: [produto e hipótese investigada]
+
+Estruture um resumo com:
+1. Perfil do entrevistado em 2 linhas
+2. Os 3 principais problemas mencionados (com citação direta)
+3. Comportamento atual — como resolve o problema hoje
+4. Motivação real — o que ele quer alcançar (não o que pediu)
+5. Surpresas — algo que não esperava ouvir
+6. Hipóteses para investigar nas próximas entrevistas</div>
+  </div>
+</div>
+
+<h2>Erros que arruínam a entrevista</h2>
+<div class="callout callout-warm">
+<strong>Perguntas hipotéticas:</strong> "Você usaria um produto que fizesse X?" — o usuário responde o que acha que você quer ouvir, não o que faria de verdade.<br><br>
+<strong>Perguntas fechadas no início:</strong> "Você tem esse problema?" — prefira "Me conta como você lida com isso hoje."<br><br>
+<strong>Sugerir a solução:</strong> "O que você acha de um painel que mostrasse X automaticamente?" — contamina a resposta com a sua hipótese.<br><br>
+<strong>Silêncio desconfortável:</strong> muitos PMs falam demais para preencher o silêncio. Silêncio é seu aliado — o usuário vai continuar falando.
+</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

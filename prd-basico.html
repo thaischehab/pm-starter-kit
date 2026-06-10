@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD Básico — Documento de Requisitos — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Entrega</div>
+    <h1>PRD Básico — Documento de Requisitos</h1>
+    <p class="page-desc">Um PRD que o time de engenharia realmente lê — preenchido com exemplo real e anotações de PM.</p>
+  </div>
+  
+
+<h2>O que é um PRD e para que serve</h2>
+<p>Um PRD (Product Requirements Document) alinha todo o time sobre o que está sendo construído, por quê, para quem e como o sucesso será medido. Não é uma especificação técnica — é uma comunicação de intenção e contexto para engenharia, design, dados e stakeholders.</p>
+<div class="callout callout-warm"><strong>Erro mais comum:</strong> PRDs longos demais que ninguém lê. Um bom PRD cabe em uma página. Se precisar de mais, você ainda não entendeu o problema bem o suficiente para começar a construir.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para criar o primeiro rascunho do PRD.</strong> Descreva o problema, os dados que você tem e a solução proposta. A IA estrutura o documento no formato correto, que você então revisa, complementa com contexto e valida com o time. Reduz o tempo de produção de 3 horas para 45 minutos.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — primeiro rascunho do PRD</div>
+    <div class="prompt-body">Crie um rascunho de PRD (Product Requirements Document) com base nas informações abaixo.
+
+Problema:
+[descreva o problema com dados: quem afeta, qual a evidência, impacto no negócio]
+
+Solução proposta:
+[descreva a solução em alto nível]
+
+Restrições conhecidas:
+[prazo, dependências, o que NÃO está no escopo]
+
+Estruture o PRD com:
+1. Contexto e problema (com dados)
+2. Personas afetadas
+3. Por que agora (urgência)
+4. Solução proposta + o que NÃO faremos
+5. Hipótese central
+6. Requisitos funcionais (RF1, RF2...)
+7. Métricas de sucesso (primária, secundária, guardrail)
+8. Dependências e riscos
+
+Seja direto. Cada seção deve caber em 3-5 linhas.</div>
+  </div>
+</div>
+
+<h2>Template preenchido — Feature: Notificações de Vencimento</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Contexto e problema</span></div>
+  <div class="tpl-row"><div class="tpl-label">Problema</div><div class="tpl-value">45% dos churns no último trimestre mencionaram "perdi o prazo de um contrato importante" como fator de decisão. Usuários não percebem vencimentos com antecedência suficiente para agir.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Para quem</div><div class="tpl-value">Gestores de contrato em empresas de 50 a 500 funcionários que gerenciam mais de 20 contratos simultaneamente.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Por que agora</div><div class="tpl-value">Apareceu em 8 das últimas 10 entrevistas de churn. É o bloqueador número 1 de retenção neste trimestre. Custo de aquisição 5x maior que custo de retenção.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Solução proposta</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que faremos</div><div class="tpl-value">Notificações automáticas por email e in-app quando contratos estão a 30, 15 e 7 dias do vencimento, com link direto para o contrato.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que NÃO faremos</div><div class="tpl-value">SMS (fase 2). Renovação automática de contrato (fora do escopo). App mobile (roadmap Q4). Notificação para outros membros do time (fase 2).</div></div>
+  <div class="tpl-row"><div class="tpl-label">Hipótese</div><div class="tpl-value">Se os usuários receberem alertas com antecedência suficiente, conseguirão agir antes do vencimento, reduzindo o churn relacionado a contratos perdidos em pelo menos 20% em 90 dias.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Requisitos funcionais</span></div>
+  <div class="tpl-row"><div class="tpl-label">RF1</div><div class="tpl-value">O sistema envia email automático para o responsável pelo contrato 30, 15 e 7 dias antes do vencimento, às 8h no horário do usuário.</div></div>
+  <div class="tpl-row"><div class="tpl-label">RF2</div><div class="tpl-value">O usuário consegue configurar quais contratos quer monitorar e com quantos dias de antecedência quer ser avisado (7, 15 ou 30 dias).</div></div>
+  <div class="tpl-row"><div class="tpl-label">RF3</div><div class="tpl-value">Notificação in-app aparece no dashboard quando há contratos vencendo nos próximos 7 dias. O badge some após o usuário visualizar.</div></div>
+  <div class="tpl-row"><div class="tpl-label">RF4</div><div class="tpl-value">O usuário pode desativar notificações por contrato específico sem afetar os demais. A configuração fica salva por contrato.</div></div>
+  <div class="tpl-row"><div class="tpl-label">RF5</div><div class="tpl-value">O email contém: nome do contrato, data de vencimento, dias restantes e link direto para o contrato na plataforma.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Métricas de sucesso</span></div>
+  <div class="tpl-row"><div class="tpl-label">Primária</div><div class="tpl-value">Redução de 20% no churn com menção a "prazo de contrato" nas entrevistas de saída — medido em 90 dias após o lançamento.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Secundária</div><div class="tpl-value">70% dos usuários com notificações ativas abrem o email de alerta (taxa de abertura por campanha).</div></div>
+  <div class="tpl-row"><div class="tpl-label">Guardrail</div><div class="tpl-value">Taxa de unsubscribe abaixo de 15%. Se ultrapassar, revisamos frequência e copy dos emails antes de continuar.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Dependências e riscos</span></div>
+  <div class="tpl-row"><div class="tpl-label">Dependência</div><div class="tpl-value">Integração com provedor de email (Sendgrid já configurado). Template de email aprovado pelo design. Definição de "responsável pelo contrato" no modelo de dados.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Risco técnico</div><div class="tpl-value tpl-positive">Baixo — funcionalidade conhecida pelo time, sem incerteza técnica relevante.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Risco de produto</div><div class="tpl-value tpl-neutral">Médio — usuários podem achar emails excessivos. Mitigação: começar com frequência conservadora e ajustar com dados reais de uso.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para revisar os requisitos antes de compartilhar com engenharia.</strong> Cole os RFs e peça para a IA identificar ambiguidades, casos de borda não cobertos e perguntas que o time de engenharia provavelmente vai fazer. Previne idas e vindas desnecessárias durante o desenvolvimento.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — revisão de requisitos funcionais</div>
+    <div class="prompt-body">Revise os requisitos funcionais abaixo como um engenheiro sênior que vai implementar essa feature.
+
+Contexto do produto: [produto, stack tecnológico se souber]
+
+Requisitos:
+[cole os RFs]
+
+Identifique:
+1. Ambiguidades que podem gerar interpretações diferentes entre engenheiros
+2. Casos de borda não cobertos (ex: o que acontece se o usuário não tiver email cadastrado?)
+3. Conflitos entre requisitos
+4. Perguntas que o time de engenharia provavelmente vai fazer nas primeiras horas
+5. Requisitos não-funcionais que estão implícitos mas deveriam ser explícitos (performance, segurança, acessibilidade)
+
+Seja direto. Cada problema identificado deve ter uma sugestão de como resolver.</div>
+  </div>
+</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

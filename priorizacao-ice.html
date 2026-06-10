@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework de Priorização ICE — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag">Roadmap</div>
+    <h1>Framework de Priorização ICE</h1>
+    <p class="page-desc">Priorize seu backlog com critérios claros — e saiba quando o ICE vai te enganar.</p>
+  </div>
+  
+
+<h2>O que é o ICE e quando usar</h2>
+<p>ICE avalia cada item em três dimensões: <strong>Impact</strong> (impacto esperado no resultado), <strong>Confidence</strong> (confiança de que esse impacto vai acontecer) e <strong>Ease</strong> (facilidade de implementação). Score = I × C × E.</p>
+<div class="callout callout-warm"><strong>Cuidado crítico:</strong> o ICE favorece o que é fácil de fazer. Isso incentiva pegar o caminho mais fácil sistematicamente — perigoso quando o problema difícil é exatamente o que importa. Use ICE para hipóteses de crescimento e experimentos rápidos. Para decisões estratégicas, use RICE ou uma planilha com critérios ponderados.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para pontuação inicial do backlog.</strong> Cole uma lista de itens e o contexto do produto (métricas principais, perfil do usuário, momento da empresa). A IA sugere scores com justificativa — você revisa e ajusta com base no seu conhecimento do contexto. Economiza 1-2 horas de reunião de priorização.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — pontuar backlog com ICE</div>
+    <div class="prompt-body">Você é um PM sênior com 10 anos de experiência em produtos SaaS.
+
+Produto: [descrição breve]
+Métrica principal do trimestre: [ex: reduzir churn de 8% para 5%]
+Perfil do usuário: [descrição]
+
+Backlog a priorizar:
+[liste os itens, um por linha]
+
+Para cada item, atribua scores ICE (1-10) com justificativa:
+- Impact: quanto move a métrica principal (10 = impacto direto e significativo)
+- Confidence: qual a evidência que temos (10 = validado com dados + pesquisa)
+- Ease: facilidade de implementação (10 = menos de 1 sprint, sem dependências)
+
+Apresente em tabela e destaque os 3 maiores pontos cegos que o ICE não captura para esses itens específicos.</div>
+  </div>
+</div>
+
+<h2>Como pontuar cada dimensão (escala 1–10)</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Impact — Impacto</span></div>
+  <div class="tpl-row"><div class="tpl-label">10</div><div class="tpl-value">Move a North Star Metric do produto de forma direta e mensurável no trimestre</div></div>
+  <div class="tpl-row"><div class="tpl-label">7 a 9</div><div class="tpl-value">Impacto alto em métrica secundária ou resolve problema crítico de retenção ou conversão</div></div>
+  <div class="tpl-row"><div class="tpl-label">4 a 6</div><div class="tpl-value">Melhora a experiência mas impacto na métrica é indireto ou difícil de medir</div></div>
+  <div class="tpl-row"><div class="tpl-label">1 a 3</div><div class="tpl-value">Nice to have — melhoria marginal sem conexão clara com nenhuma métrica</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Confidence — Confiança</span></div>
+  <div class="tpl-row"><div class="tpl-label">10</div><div class="tpl-value">Validado com dados quantitativos E entrevistas qualitativas com múltiplos usuários</div></div>
+  <div class="tpl-row"><div class="tpl-label">7 a 9</div><div class="tpl-value">Evidência qualitativa forte — múltiplos usuários mencionaram o problema espontaneamente</div></div>
+  <div class="tpl-row"><div class="tpl-label">4 a 6</div><div class="tpl-value">Hipótese razoável baseada em dados indiretos, analogias de mercado ou pedido recorrente</div></div>
+  <div class="tpl-row"><div class="tpl-label">1 a 3</div><div class="tpl-value">Intuição ou pedido isolado de um stakeholder — sem evidência de usuário real</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Ease — Facilidade</span></div>
+  <div class="tpl-row"><div class="tpl-label">10</div><div class="tpl-value">Menos de 1 dia — mudança de configuração, ajuste de copy ou toggle de feature flag</div></div>
+  <div class="tpl-row"><div class="tpl-label">7 a 9</div><div class="tpl-value">1 sprint ou menos — escopo bem definido, sem dependências externas, tech stack familiar</div></div>
+  <div class="tpl-row"><div class="tpl-label">4 a 6</div><div class="tpl-value">2 a 3 sprints — alguma complexidade técnica, dependência externa ou incerteza de design</div></div>
+  <div class="tpl-row"><div class="tpl-label">1 a 3</div><div class="tpl-value">Mais de 1 mês — alta incerteza técnica, mudança arquitetural ou integração complexa</div></div>
+</div>
+
+<h2>Planilha ICE preenchida — exemplo real</h2>
+<div style="overflow-x:auto;margin:20px 0">
+<table class="tpl-table">
+  <thead><tr><th>Item do backlog</th><th>Impact</th><th>Confidence</th><th>Ease</th><th>Score</th><th>Decisão</th></tr></thead>
+  <tbody>
+    <tr><td>Notificações de vencimento de contrato</td><td>9</td><td>8</td><td>7</td><td class="score-high">504</td><td><span class="tag-teal">Sprint atual</span></td></tr>
+    <tr><td>Exportação de relatórios em PDF</td><td>6</td><td>9</td><td>9</td><td class="score-high">486</td><td><span class="tag-teal">Sprint atual</span></td></tr>
+    <tr><td>Dashboard de analytics do cliente</td><td>8</td><td>7</td><td>5</td><td class="score-mid">280</td><td><span class="tag-warm">Próxima sprint</span></td></tr>
+    <tr><td>Integração com ERP legado</td><td>7</td><td>4</td><td>2</td><td class="score-low">56</td><td><span class="tag-low">Adiar</span></td></tr>
+    <tr><td>App mobile nativo</td><td>5</td><td>3</td><td>2</td><td class="score-low">30</td><td><span class="tag-low">Backlog</span></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout callout-ink"><strong>Leitura crítica da tabela:</strong> a exportação em PDF tem score parecido com as notificações, mas por razões completamente opostas — impacto baixo compensado por facilidade alta. Antes de priorizar o PDF, pergunte: esse item resolve um problema real validado com usuários, ou é uma feature de conveniência? O score não responde isso — só o discovery responde.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática</span></div>
+  <div class="ai-tip"><strong>Use IA para identificar itens que o ICE sistematicamente subestima.</strong> Dívida técnica, segurança, retenção silenciosa e apostas estratégicas de longo prazo sempre ficam com scores baixos no ICE — mas podem ser os mais críticos para o negócio. Peça para a IA revisar sua lista e apontar o que pode estar sendo ignorado.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — identificar pontos cegos do ICE</div>
+    <div class="prompt-body">Abaixo está minha planilha ICE com os scores:
+
+[cole os itens com scores]
+
+Contexto do produto: [momento da empresa, métrica principal, perfil do usuário]
+
+Identifique:
+1. Quais itens o ICE sistematicamente subestima nesse contexto? (ex: dívida técnica, segurança)
+2. Existe algum item com score baixo que pode ser crítico por razões que o ICE não captura?
+3. Algum item com score alto que pode ser uma armadilha (fácil de fazer, mas resolve o problema errado)?
+4. O que eu deveria adicionar à lista que provavelmente nem está no backlog ainda?</div>
+  </div>
+</div>
+
+<h2>Quando NÃO usar o ICE</h2>
+<p>Crie uma linha separada no roadmap chamada "Non-negotiable" para itens que não negociam com score:</p>
+<div class="tpl-block">
+  <div class="tpl-row"><div class="tpl-label">Dívida técnica</div><div class="tpl-value">Não tem Reach ou Impact direto, mas cresce até quebrar em produção. Reserve 20% da capacidade do time fora da priorização normal.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Segurança e compliance</div><div class="tpl-value">LGPD, auditoria, vulnerabilidades críticas. Essas demandas não negociam com score — têm prazo e consequência legal.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Apostas estratégicas</div><div class="tpl-value">Às vezes você precisa construir algo que nenhum usuário pediu porque você enxerga uma oportunidade de mercado. O ICE vai dar score baixo. Um bom PM sabe quando ignorar o framework.</div></div>
+</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>
