@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PM Orientado a Dados na Era da IA — PM Starter Kit PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag" style="display:inline-flex;align-items:center;gap:8px">
+      <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.08em">KIT PRO</span>
+      Kit PRO · Dados & IA
+    </div>
+    <h1>PM Orientado a Dados na Era da IA</h1>
+    <p class="page-desc">Como usar dados e IA para tomar decisões de produto — não apenas para reportar métricas.</p>
+  </div>
+  
+<h2>O problema com "ser orientado a dados"</h2>
+<p>Todo PM diz que é orientado a dados. Mas existe uma diferença enorme entre <strong>reportar dados</strong> e <strong>tomar decisões com dados</strong>. A maioria faz o primeiro. Poucos fazem o segundo.</p>
+<p>Reportar dados é olhar para o dashboard e descrever o que aconteceu. Tomar decisões com dados é usar análise para reduzir a incerteza de uma escolha específica — e saber quando os dados não são suficientes para decidir e você precisa de pesquisa qualitativa.</p>
+
+<div class="callout callout-warm"><strong>A armadilha do data-driven:</strong> dados descrevem o passado. Produto é sobre o futuro. Usar dados para justificar uma decisão já tomada não é ser orientado a dados — é cherry-picking. Dados reduzem incerteza; não eliminam julgamento.</div>
+
+<h2>Os 4 níveis de maturidade em dados para PMs</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Nível 1</span><span class="tpl-step-name">Reativo — "o que aconteceu?"</span></div>
+  <div class="tpl-row"><div class="tpl-label">Comportamento</div><div class="tpl-value">Lê o dashboard quando algo dá errado. Usa dados para investigar problemas depois que ocorrem.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Google Analytics, Mixpanel básico, relatórios de CS</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Não usa dados para antecipar problemas ou guiar decisões proativas. Produto no piloto automático.</div></div><div class="tpl-row"><div class="tpl-label">Sinal</div><div class="tpl-value">"A métrica caiu 20% essa semana" — investigação começa depois do fato.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Nível 2</span><span class="tpl-step-name">Descritivo — "o que está acontecendo?"</span></div>
+  <div class="tpl-row"><div class="tpl-label">Comportamento</div><div class="tpl-value">Monitora métricas regularmente. Cria dashboards. Reporta para stakeholders com contexto.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Amplitude, Mixpanel, Tableau, Metabase</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Foca em descrever comportamento, não em entender causas. Confunde correlação com causalidade.</div></div><div class="tpl-row"><div class="tpl-label">Sinal</div><div class="tpl-value">"Nossa retenção é 72% — acima da média do setor." Mas não sabe por que 28% saem.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Nível 3</span><span class="tpl-step-name">Diagnóstico — "por que está acontecendo?"</span></div>
+  <div class="tpl-row"><div class="tpl-label">Comportamento</div><div class="tpl-value">Segmenta usuários para entender diferenças de comportamento. Combina dados quantitativos com pesquisa qualitativa. Forma e testa hipóteses.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Análise de cohort, funil segmentado, entrevistas de churn, A/B testing</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Ainda é reativo — espera o problema aparecer para investigar.</div></div><div class="tpl-row"><div class="tpl-label">Sinal</div><div class="tpl-value">"Usuários que não completam o onboarding têm 3x mais churn. Investigando por quê."</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Nível 4</span><span class="tpl-step-name">Preditivo — "o que vai acontecer e o que fazer?"</span></div>
+  <div class="tpl-row"><div class="tpl-label">Comportamento</div><div class="tpl-value">Usa padrões de comportamento para antecipar churn, oportunidades e riscos. IA amplifica essa capacidade. Age antes do problema se manifestar.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Modelos preditivos, análise de behavioral signals, IA para identificação de padrões, alertas proativos</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Requer dados históricos suficientes e integração entre sistemas. Não elimina a necessidade de julgamento humano.</div></div><div class="tpl-row"><div class="tpl-label">Sinal</div><div class="tpl-value">"Usuários com esse padrão de comportamento têm 70% de probabilidade de churnar nos próximos 30 dias. Ativando intervenção proativa."</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — subir do nível 2 para o nível 3</span></div>
+  <div class="ai-tip"><strong>Use IA para identificar padrões de comportamento que separam usuários de sucesso dos que churnam.</strong> Descreva os dados que você tem (métricas de uso, cohorts, funil) e peça para a IA formular hipóteses de por que grupos diferentes se comportam de forma diferente. O output é uma lista de hipóteses para testar — com pesquisa qualitativa e experimentos.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — diagnosticar diferenças de comportamento entre segmentos</div>
+    <div class="prompt-body">Você é um analista de produto sênior.
+
+Tenho os seguintes dados sobre meu produto:
+- Métrica de retenção em 30 dias: <span class="prompt-var">[X%]</span>
+- Segmentação que identifiquei: <span class="prompt-var">[ex: usuários que completam o onboarding têm retenção 2x maior]</span>
+- Outros padrões observados: <span class="prompt-var">[descreva]</span>
+
+Contexto do produto: <span class="prompt-var">[produto, segmento, estágio]</span>
+
+Por favor:
+1. Formule 5-7 hipóteses sobre POR QUE esses segmentos se comportam diferente
+2. Para cada hipótese, indique: como eu validaria (dados que precisaria ou pesquisa qualitativa)
+3. Identifique qual dado crítico está faltando para entender a causa raiz
+4. Sugira 3 experimentos ordenados por facilidade de execução vs potencial de aprendizado
+5. Aponte onde posso estar confundindo correlação com causalidade</div>
+  </div>
+</div>
+
+<h2>O framework de decisão baseada em dados</h2>
+<p>Antes de usar qualquer dado para tomar uma decisão, responda essas 5 perguntas:</p>
+
+<div class="tpl-block">
+  <div class="tpl-row"><div class="tpl-label">1. Qual decisão?</div><div class="tpl-value">Seja específico. "Melhorar retenção" não é uma decisão — "priorizar onboarding ou notificações no próximo sprint" é. Dados sem decisão a tomar são relatórios, não análise.</div></div>
+  <div class="tpl-row"><div class="tpl-label">2. Que dados reduzem a incerteza?</div><div class="tpl-value">Para cada opção, que evidência mudaria sua decisão? Se não existe dado que te faria mudar de ideia, você já decidiu — pare de coletar dados e decida.</div></div>
+  <div class="tpl-row"><div class="tpl-label">3. Os dados são confiáveis?</div><div class="tpl-value">Qual é a origem? Há viés de seleção? O período de análise é representativo? Dados de baixa qualidade usados com alta confiança são piores que não ter dados.</div></div>
+  <div class="tpl-row"><div class="tpl-label">4. O que os dados não respondem?</div><div class="tpl-value">Dados quantitativos dizem O QUÊ mas raramente dizem POR QUÊ. Se a decisão depende de entender motivação, comportamento ou contexto, você precisa de pesquisa qualitativa também.</div></div>
+  <div class="tpl-row"><div class="tpl-label">5. Qual o custo de estar errado?</div><div class="tpl-value">Se o custo é alto e reversível, invista mais em validação. Se é baixo e reversível, decida rápido e meça. Nem toda decisão merece a mesma profundidade de análise.</div></div>
+</div>
+
+<h2>Métricas que todo PM precisa dominar</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Aquisição</span></div>
+  <div class="tpl-row"><div class="tpl-label">CAC</div><div class="tpl-value">Custo de Aquisição por Cliente. Se o CAC for maior que o LTV, o negócio está destruindo valor. Todo PM deve conhecer o CAC do seu produto — e como suas decisões o afetam.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Taxa de conversão por canal</div><div class="tpl-value">Usuarios que vieram de qual canal convertem melhor? Isso informa tanto o produto (onboarding diferenciado) quanto o negócio (onde investir em aquisição).</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Ativação e onboarding</span></div>
+  <div class="tpl-row"><div class="tpl-label">TTV (Time to Value)</div><div class="tpl-value">Tempo até o usuário experimentar o valor central do produto pela primeira vez. Reduzir o TTV é uma das alavancas mais poderosas de retenção — e das mais ignoradas.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Taxa de conclusão do onboarding</div><div class="tpl-value">Quantos usuários completam as ações críticas iniciais? Segmente por cohort, canal de aquisição e perfil de empresa para entender onde está o gargalo.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Engajamento e retenção</span></div>
+  <div class="tpl-row"><div class="tpl-label">DAU/MAU</div><div class="tpl-value">Frequência de uso. Um DAU/MAU de 0.5 significa que o usuário médio usa o produto 15 dias por mês. Não compare com benchmarks genéricos — compare com o que faz sentido para o caso de uso do seu produto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Retenção por cohort</div><div class="tpl-value">A curva de retenção mais importante é a por cohort — ela mostra se o produto está melhorando ao longo do tempo. Se cohorts mais recentes têm retenção maior, você está evoluindo.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Feature adoption rate</div><div class="tpl-value">Quantos usuários ativos usam uma feature específica? Features com baixa adoção podem indicar problema de discoverability, UX ruim ou simplesmente que o problema não era real.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Negócio</span></div>
+  <div class="tpl-row"><div class="tpl-label">MRR e expansão</div><div class="tpl-value">Monthly Recurring Revenue. Mais importante que o MRR total é a composição: quanto vem de novos clientes, expansão de existentes e quanto está sendo perdido em churn.</div></div>
+  <div class="tpl-row"><div class="tpl-label">NPS por segmento</div><div class="tpl-value">NPS agregado é pouco útil. NPS segmentado por cohort, tamanho de empresa ou feature utilizada revela onde o produto está criando e destruindo valor.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — definir as métricas certas para uma nova feature</span></div>
+  <div class="ai-tip"><strong>Use IA para identificar quais métricas realmente capturam o valor que uma feature entrega</strong> — e quais são métricas de vaidade que parecem importantes mas não informam decisões. Descreva a feature e o usuário: a IA ajuda a definir métrica primária, secundária e guardrail antes do desenvolvimento começar.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — definir métricas de sucesso para uma feature</div>
+    <div class="prompt-body">Vou lançar a seguinte feature:
+<span class="prompt-var">[descreva a feature e o problema que resolve]</span>
+
+Usuário-alvo: <span class="prompt-var">[perfil do usuário]</span>
+Hipótese central: <span class="prompt-var">[se fizermos X, então Y acontecerá]</span>
+Métrica North Star do produto: <span class="prompt-var">[qual é a métrica mais importante do produto]</span>
+
+Por favor:
+1. Sugira 1 métrica primária de sucesso — deve conectar diretamente com a hipótese
+2. Sugira 2 métricas secundárias — sinais que confirmariam o impacto
+3. Sugira 1-2 métricas guardrail — o que não pode piorar
+4. Identifique métricas de vaidade que eu poderia confundir com sucesso real
+5. Defina o que seria um resultado positivo, neutro e negativo após 30/60/90 dias
+6. Aponte os riscos de medir errado essa feature específica</div>
+  </div>
+</div>
+
+<div class="callout callout-teal"><strong>Regra prática:</strong> se você não consegue explicar em uma frase como uma métrica conecta ao valor do usuário ou ao resultado do negócio, provavelmente é uma métrica de vaidade. Pageviews, número de features entregues e "usuários cadastrados" raramente informam decisões de produto.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>

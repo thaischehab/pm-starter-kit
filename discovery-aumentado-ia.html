@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discovery Aumentado por IA — PM Starter Kit PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag" style="display:inline-flex;align-items:center;gap:8px">
+      <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.08em">KIT PRO</span>
+      Kit PRO · Discovery & IA
+    </div>
+    <h1>Discovery Aumentado por IA</h1>
+    <p class="page-desc">Como combinar pesquisa qualitativa, dados quantitativos e IA para fazer discovery em uma fração do tempo.</p>
+  </div>
+  
+<h2>Por que o discovery precisa evoluir</h2>
+<p>O discovery tradicional tem um problema de escala: entrevistas são ricas mas lentas, e analytics são rápidos mas rasos. A combinação dos dois sempre existiu — mas era cara e demorada. IA muda essa equação.</p>
+<p>Com IA como co-piloto, você consegue processar 10x mais sinais de usuário no mesmo tempo, triangular dados qualitativos e quantitativos com mais rigor e gerar hipóteses que você não teria chegado sozinho.</p>
+
+<div class="callout callout-teal"><strong>O princípio fundamental:</strong> IA amplifica o que você coloca para dentro. Se você coloca perguntas rasas, vai receber insights rasos. Se você coloca dados ricos — transcrições, feedbacks, comportamento real — vai receber análises que genuinamente economizam dias de trabalho.</div>
+
+<h2>As 4 fontes de sinal que todo PM deve monitorar</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fonte 1</span><span class="tpl-step-name">Comportamento no produto (quantitativo)</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Eventos de uso, funil de conversão, padrões de navegação, features mais e menos usadas, sessões, tempo por tela.</div></div><div class="tpl-row"><div class="tpl-label">O que revela</div><div class="tpl-value">O QUÊ os usuários fazem — com alta escala e precisão. Identifica onde existe fricção, abandono e sucesso.</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Não revela POR QUÊ. Um usuário pode sair de uma tela porque ficou confuso, porque resolveu o problema ou porque foi interrompido — analytics não distingue.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Amplitude, Mixpanel, PostHog, FullStory, Hotjar</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fonte 2</span><span class="tpl-step-name">Voz do usuário (qualitativo)</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Entrevistas, suporte ao cliente, reviews em lojas, comentários em redes sociais, NPS verbatim, feedback in-app.</div></div><div class="tpl-row"><div class="tpl-label">O que revela</div><div class="tpl-value">O POR QUÊ por trás do comportamento. Contexto, emoção, motivação e linguagem real do usuário.</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Volume pequeno e viés de seleção — quem fala é diferente de quem usa em silêncio. Não é representativo de toda a base.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Dovetail, UserInterviews, Intercom, Zendesk, G2, Trustpilot</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fonte 3</span><span class="tpl-step-name">Sinais de mercado (externo)</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Comportamento de concorrentes, tendências de busca, movimentos de investimento, mudanças regulatórias, adoção de tecnologia no setor.</div></div><div class="tpl-row"><div class="tpl-label">O que revela</div><div class="tpl-value">O contexto em que seu produto existe. O que está mudando no mercado que vai afetar as necessidades do usuário nos próximos 12-24 meses.</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">É lagging — você está observando o que já aconteceu, não o que vai acontecer. Requer interpretação cuidadosa.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Google Trends, SimilarWeb, Product Hunt, LinkedIn, relatórios de setor</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fonte 4</span><span class="tpl-step-name">Times internos (proxy)</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">CS, vendas, suporte e sucesso do cliente têm contato diário com usuários. São antenas de mercado subutilizadas pela maioria dos times de produto.</div></div><div class="tpl-row"><div class="tpl-label">O que revela</div><div class="tpl-value">Padrões de objeção, perguntas frequentes, razões de churn, comparações com concorrentes e necessidades não atendidas — em escala e sem custo de pesquisa.</div></div><div class="tpl-row"><div class="tpl-label">Limitação</div><div class="tpl-value">Viés de recência e de quem é mais vocal. Times comerciais tendem a amplificar o que seus maiores clientes pedem — que nem sempre reflete a base.</div></div><div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">Reuniões de escuta, templates de coleta de insights, Slack, Notion</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — triangular múltiplas fontes de sinal</span></div>
+  <div class="ai-tip"><strong>A triangulação é onde IA realmente acelera o discovery.</strong> Você tem dados de analytics, feedback de CS e 10 entrevistas — processar isso manualmente levaria dias. Cole tudo numa IA com contexto do produto e peça para identificar padrões consistentes entre as fontes. Inconsistências entre fontes são tão valiosas quanto os padrões.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — triangular fontes de discovery</div>
+    <div class="prompt-body">Estou fazendo discovery sobre <span class="prompt-var">[problema ou área do produto]</span>.
+
+Coletei dados de múltiplas fontes:
+
+ANALYTICS (comportamento no produto):
+<span class="prompt-var">[cole métricas relevantes, taxas de abandono, funil, etc.]</span>
+
+VOZ DO USUÁRIO (entrevistas e feedback):
+<span class="prompt-var">[cole trechos de entrevistas, tickets de suporte, reviews]</span>
+
+SINAIS INTERNOS (CS, vendas):
+<span class="prompt-var">[cole insights compartilhados por times internos]</span>
+
+Por favor:
+1. Identifique padrões CONSISTENTES entre as três fontes — onde todas apontam para o mesmo lugar
+2. Identifique CONTRADIÇÕES — onde as fontes dizem coisas diferentes. Contradições são oportunidades de aprendizado
+3. Quais perguntas os dados respondem com alta confiança?
+4. Quais perguntas ainda estão em aberto e precisam de mais pesquisa?
+5. Formule as 3 hipóteses de produto mais promissoras com base na triangulação
+6. Para cada hipótese, qual o próximo experimento mais barato para validar?</div>
+  </div>
+</div>
+
+<h2>O ciclo de discovery aumentado por IA</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fase 1</span><span class="tpl-step-name">Coleta ampla — escuta em escala</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que fazer</div><div class="tpl-value">Colete todos os sinais disponíveis sem filtrar: analytics da semana, tickets de suporte do mês, últimas 10 entrevistas, reviews recentes, conversas de vendas perdidas.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Onde IA ajuda</div><div class="tpl-value">Processamento de volume: categorizar centenas de tickets, identificar temas em reviews, extrair padrões de transcrições. Trabalho que levaria dias passa a levar horas.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Output</div><div class="tpl-value">Lista de temas recorrentes com frequência e exemplos representativos de cada um.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fase 2</span><span class="tpl-step-name">Formação de hipóteses — do sinal à hipótese</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que fazer</div><div class="tpl-value">Para cada tema identificado, forme hipóteses sobre causa e solução. Use IA para gerar hipóteses alternativas que você não teria pensado — e para questionar as suas.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Onde IA ajuda</div><div class="tpl-value">Geração de hipóteses concorrentes. É fácil se apaixonar pela primeira hipótese que faz sentido — IA ajuda a manter outras em consideração antes de decidir qual investigar.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Output</div><div class="tpl-value">3-5 hipóteses priorizadas por potencial de impacto e facilidade de validação.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fase 3</span><span class="tpl-step-name">Validação direcionada — pesquisa focada</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que fazer</div><div class="tpl-value">Conduza entrevistas e experimentos especificamente desenhados para testar as hipóteses da Fase 2. Não pesquisa genérica — pesquisa cirúrgica para reduzir a incerteza das hipóteses específicas.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Onde IA ajuda</div><div class="tpl-value">Preparação de roteiros, síntese de entrevistas, identificação de evidências que confirmam ou contradizem cada hipótese.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Output</div><div class="tpl-value">Hipóteses com nível de confiança atualizado: alta / média / baixa — com evidências específicas para cada.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Fase 4</span><span class="tpl-step-name">Decisão e documentação</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que fazer</div><div class="tpl-value">Com as hipóteses validadas, tome a decisão de priorização e documente o raciocínio. Não só o que foi decidido — mas por quê e com qual evidência.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Onde IA ajuda</div><div class="tpl-value">Estruturar a documentação de decisão para compartilhar com o time. Um bom documento de decisão previne revisitar as mesmas discussões 3 meses depois.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Output</div><div class="tpl-value">Documento de oportunidade ou PRD com evidências claras. Próximos passos definidos.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — documentar decisões de produto</span></div>
+  <div class="ai-tip"><strong>Decisões sem documentação se perdem.</strong> Em 6 meses ninguém vai lembrar por que aquela feature foi priorizada, qual era a hipótese ou o que foi validado. Use IA para estruturar o documento de decisão enquanto o contexto ainda está fresco.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — documentar decisão de produto</div>
+    <div class="prompt-body">Preciso documentar uma decisão de produto para o time.
+
+Decisão tomada: <span class="prompt-var">[o que foi decidido]</span>
+Alternativas consideradas: <span class="prompt-var">[o que mais estava em consideração]</span>
+Evidências que embasaram a decisão: <span class="prompt-var">[dados, entrevistas, experimentos]</span>
+O que ficou de fora e por quê: <span class="prompt-var">[o que não foi incluído no escopo]</span>
+Hipótese central: <span class="prompt-var">[o que estamos apostando que vai acontecer]</span>
+Como mediremos sucesso: <span class="prompt-var">[métricas e prazo]</span>
+
+Estruture um documento de decisão com:
+1. Contexto e problema (2-3 parágrafos)
+2. Decisão e escopo
+3. Evidências que suportam a decisão
+4. O que ficou de fora e por quê (importante para evitar scope creep)
+5. Riscos e como estamos mitigando
+6. Como saberemos que foi a decisão certa (ou errada)
+7. Próximos passos com responsáveis e prazo
+
+Tom: direto, orientado a evidência, sem jargão.</div>
+  </div>
+</div>
+
+<div class="callout callout-ink"><strong>O que separa um PM sênior de um PM júnior não é o conhecimento de frameworks — é a qualidade das perguntas que ele faz.</strong> IA não faz as perguntas por você. Ela te ajuda a processar as respostas mais rápido, para que você possa fazer mais perguntas melhores no mesmo tempo.</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>
