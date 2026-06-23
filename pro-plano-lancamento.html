@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Lançamento de Feature — Kit PRO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12)}.nav-back:hover{color:#fff}
+.nav-pro-badge{font-size:10px;font-weight:700;background:var(--accent);color:#fff;padding:3px 10px;border-radius:20px;letter-spacing:0.06em}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.pro-badge-header{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:16px;font-weight:700;color:var(--ink);margin:24px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+ul,ol{padding-left:20px;margin-bottom:14px}
+li{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:6px}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+/* TEMPLATE BLOCKS */
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--paper);resize:vertical;min-height:40px;outline:none;transition:border-color 0.15s}
+.tpl-input:focus{border-color:var(--accent)}
+/* AI PROMPTS */
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+/* PRINT */
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;margin-bottom:28px}
+.print-btn:hover{background:#44403c}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin:20px 0}
+thead{background:var(--cream)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+/* PRINT STYLES */
+@media print{
+  .nav,.print-btn,.ai-box{display:none!important}
+  body{background:#fff}
+  .content{margin-top:0}
+  .tpl-input{border:1px solid #ccc;background:#fff}
+  h2{page-break-before:auto}
+  .tpl-block{page-break-inside:avoid}
+}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="kit-pro.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-pro-badge">KIT PRO</span>
+    <a href="kit-pro.html" class="nav-back">← Voltar ao Kit PRO</a>
+  </div>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="pro-badge-header">
+      <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.08em;text-transform:uppercase">KIT PRO · EXCLUSIVO</span>
+      <span class="cat-tag">Templates PRO · Go-to-Market</span>
+    </div>
+    <h1>Plano de Lançamento de Feature</h1>
+    <p class="page-desc">Como lançar features com clareza: comunicação, rollout gradual, métricas e plano de rollback.</p>
+    <button class="print-btn" onclick="window.print()">⬇ Imprimir / Salvar como PDF</button>
+  </div>
+  
+<h2>O que é e quando usar</h2>
+<p>Um plano de lançamento define como uma feature ou produto chega ao mercado — não apenas quando. Cobre comunicação interna e externa, rollout gradual, critérios de sucesso e plano de rollback. PMs que pulam essa etapa geralmente descobrem o problema quando o cliente já ligou.</p>
+<div class="callout callout-warm"><strong>Use este template quando:</strong> você está prestes a lançar uma feature nova, mudança significativa no produto ou novo produto. Preencha 2 semanas antes do lançamento — não no dia antes.</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 1</span><span class="tpl-step-name">O que está sendo lançado</span></div>
+  <div class="tpl-row"><div class="tpl-label">Nome da feature / produto</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Ex: Notificações de vencimento de contrato"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Descrição em uma frase</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que o usuário vai poder fazer que antes não conseguia? Ex: Receber alertas automáticos quando contratos estão próximos do vencimento."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Data alvo de lançamento</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="DD/MM/AAAA — e se é hard deadline ou flexível"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Tipo de lançamento</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Full release / Beta fechado / Rollout gradual (%) / Feature flag / Early access"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Quem receberá primeiro</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Se rollout gradual: qual segmento recebe primeiro e por quê? Ex: Clientes enterprise com mais de 50 contratos ativos — maior impacto e maior capacidade de feedback qualificado."></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 2</span><span class="tpl-step-name">Comunicação interna</span></div>
+  <div class="tpl-row"><div class="tpl-label">Times que precisam saber</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="CS, Suporte, Vendas, Marketing, Jurídico... — e o que cada um precisa saber especificamente."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Treinamento necessário</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="CS e Suporte precisam de treinamento antes do lançamento? Qual formato e quando? Ex: Sessão de 45min com CS na semana anterior. FAQ escrito para suporte."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">FAQ interno</div><div class="tpl-value"><textarea class="tpl-input" rows="4" placeholder="Perguntas que CS e Suporte provavelmente vão receber — e as respostas.&#10;P: Como o usuário ativa os alertas?&#10;R: ...&#10;P: Posso desativar para um contrato específico?&#10;R: ..."></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 3</span><span class="tpl-step-name">Comunicação com usuários</span></div>
+  <div class="tpl-row"><div class="tpl-label">Canais de comunicação</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Email, in-app, blog, redes sociais — o que vai ser usado e em qual ordem."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Mensagem principal</div><div class="tpl-value"><textarea class="tpl-input" rows="3" placeholder="O que o usuário precisa saber em uma frase? Ex: 'Agora você recebe alertas automáticos antes de contratos vencerem — nunca mais perca um prazo importante.'"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Call to action</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="O que queremos que o usuário faça? Ex: Ativar notificações nas configurações do contrato."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Timing da comunicação</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Quando enviar cada comunicação? Ex: D-1: email de teaser para clientes enterprise. D+0: in-app onboarding para todos. D+7: email de follow-up com dados de uso."></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 4</span><span class="tpl-step-name">Métricas e critérios de sucesso</span></div>
+  <div class="tpl-row"><div class="tpl-label">Métrica primária</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O número que define sucesso. Ex: 50% dos usuários ativos com notificações ativadas em 30 dias."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Métricas secundárias</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Sinais que confirmam o impacto. Ex: Taxa de abertura dos emails de alerta >60%. Redução de tickets de suporte sobre prazos perdidos."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Métricas guardrail</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que não pode piorar. Ex: Taxa de unsubscribe <15%. Tickets de suporte sobre notificações indevidas <5/semana."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Quando avaliar</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="D+7, D+30, D+90 — o que você vai checar em cada checkpoint."></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 5</span><span class="tpl-step-name">Plano de rollback</span></div>
+  <div class="tpl-row"><div class="tpl-label">Critério de rollback</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Em que condição você reverteria o lançamento? Ex: Se taxa de unsubscribe >30% em 48h, ou se >20 tickets de bug crítico em 24h."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Como reverter</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Qual o processo técnico para desativar? Ex: Feature flag — engenharia pode desativar em <5min sem deploy."></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Comunicação em caso de rollback</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que você comunica para usuários e time interno se precisar reverter?"></textarea></div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — escrever comunicação do lançamento</span></div>
+  <div class="ai-tip">Use IA para rascunhar o email de lançamento e o copy in-app. Dê o contexto da feature, o usuário-alvo e o benefício principal — a IA faz o rascunho, você ajusta o tom.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — email de lançamento</div>
+    <div class="prompt-body">Escreva um email de lançamento de feature para usuários do produto.
+
+Feature: <span class="prompt-var">[nome e descrição em uma frase]</span>
+Benefício principal para o usuário: <span class="prompt-var">[o que muda na vida dele]</span>
+Call to action: <span class="prompt-var">[o que queremos que ele faça]</span>
+Tom da marca: <span class="prompt-var">[direto, informal, técnico...]</span>
+Segmento que receberá: <span class="prompt-var">[quem são esses usuários]</span>
+
+Escreva:
+1. Subject line (3 opções — direto, curioso, orientado a benefício)
+2. Preview text (1 opção, 90 caracteres)
+3. Corpo do email (máximo 150 palavras — usuários não leem mais que isso)
+4. CTA button text (máximo 4 palavras)</div>
+  </div>
+</div>
+
+</div>
+</div>
+<footer style="text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px;background:var(--paper)">
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Kit PRO · Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="kit-pro.html" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:14px">← Voltar ao Kit PRO</a>
+</footer>
+</body>
+</html>

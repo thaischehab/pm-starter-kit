@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit PRO — PM Starter Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12)}.nav-back:hover{color:#fff}
+
+/* LOCK SCREEN */
+#lock-screen{position:fixed;inset:0;background:#1c1917;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;padding:24px}
+.lock-box{background:var(--paper);border-radius:var(--r-lg);padding:48px;max-width:420px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.3);text-align:center}
+.lock-icon{font-size:40px;margin-bottom:16px}
+.lock-title{font-family:'Lora',serif;font-size:26px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.lock-desc{font-size:14px;color:var(--ink3);margin-bottom:32px;line-height:1.65}
+.lock-input{width:100%;padding:12px 16px;border:2px solid var(--border);border-radius:var(--r);font-size:15px;font-family:inherit;color:var(--ink);background:var(--surface);outline:none;transition:border-color 0.15s;text-align:center;letter-spacing:0.08em;margin-bottom:12px}
+.lock-input:focus{border-color:var(--accent)}
+.lock-btn{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.lock-btn:hover{background:#a73509}
+.lock-error{font-size:13px;color:#991b1b;margin-top:8px;display:none}
+.lock-admin-badge{font-size:11px;color:var(--ink3);margin-top:16px}
+
+/* CONTENT */
+#kit-content{display:none;background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px 80px}
+.admin-bar{background:#1c1917;padding:10px 32px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.5);position:sticky;top:56px;z-index:100}
+.admin-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.06em;margin-right:8px}
+.admin-logout{font-size:12px;color:rgba(255,255,255,0.4);cursor:pointer;text-decoration:underline}
+.admin-logout:hover{color:#fff}
+
+.pro-header{padding:56px 0 44px;border-bottom:1px solid var(--border);margin-bottom:44px}
+h1{font-family:'Lora',serif;font-size:clamp(28px,4vw,44px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:12px}
+.header-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300;max-width:600px}
+
+.section-label{font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.section-title{font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.section-desc{font-size:14px;color:var(--ink3);line-height:1.65;margin-bottom:28px}
+
+.material-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:48px}
+.material-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;text-decoration:none;color:inherit;display:block;transition:all 0.2s;box-shadow:var(--shadow)}
+.material-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:var(--accent-border)}
+.mat-cat{font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.mat-title{font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.3}
+.mat-desc{font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:14px}
+.mat-cta{font-size:12px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px}
+.mat-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--teal-dim);color:var(--teal);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px}
+
+hr{border:none;border-top:1px solid var(--border);margin:44px 0}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">← Voltar ao início</a>
+</nav>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-icon">🔐</div>
+    <div class="lock-title">Kit PRO</div>
+    <p class="lock-desc">Área exclusiva para membros. Digite a senha para acessar todos os materiais.</p>
+    <input type="password" class="lock-input" id="senha-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')verificar()">
+    <button class="lock-btn" onclick="verificar()">Acessar →</button>
+    <div class="lock-error" id="lock-error">Senha incorreta. Tente novamente.</div>
+    <p class="lock-admin-badge">Não tem acesso? <a href="index.html#pro" style="color:var(--accent);text-decoration:none;font-weight:600">Adquira o Kit PRO</a></p>
+  </div>
+</div>
+
+<!-- KIT CONTENT (visível após login) -->
+<div id="kit-content">
+
+  <!-- ADMIN BAR -->
+  <div class="admin-bar">
+    <div><span class="admin-badge">ADMIN</span> Thais Chehab · acesso completo</div>
+    <span class="admin-logout" onclick="logout()">Sair</span>
+  </div>
+
+  <div class="wrap">
+    <div class="pro-header">
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px">
+        <span style="background:#c2410c;color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:0.06em">KIT PRO · ACESSO COMPLETO</span>
+      </div>
+      <h1>Todos os materiais</h1>
+      <p class="header-desc">Templates preenchíveis, frameworks seniores e prompts de IA — tudo que você precisa para tomar decisões melhores e mais rápido.</p>
+    </div>
+
+    <!-- TEMPLATES PREENCHÍVEIS -->
+    <div class="section-label">Templates preenchíveis · Imprimir / Salvar como PDF</div>
+    <div class="section-title">Documentação de produto</div>
+    <p class="section-desc">Templates interativos com campos editáveis. Preencha no navegador e use o botão "Imprimir / Salvar como PDF" para exportar.</p>
+
+    <div class="material-grid">
+
+      <a href="pro-documento-oportunidade.html" class="material-card">
+        <div class="mat-badge">novo</div>
+        <div class="mat-cat">Estratégia · Template PRO</div>
+        <div class="mat-title">Documento de Oportunidade de Produto</div>
+        <div class="mat-desc">Estruture o argumento de por que um problema vale resolver — antes de qualquer requisito.</div>
+        <div class="mat-cta">Abrir template →</div>
+      </a>
+
+      <a href="pro-plano-lancamento.html" class="material-card">
+        <div class="mat-badge">novo</div>
+        <div class="mat-cat">Go-to-Market · Template PRO</div>
+        <div class="mat-title">Plano de Lançamento de Feature</div>
+        <div class="mat-desc">Comunicação interna, rollout gradual, métricas de sucesso e plano de rollback.</div>
+        <div class="mat-cta">Abrir template →</div>
+      </a>
+
+      <a href="pro-entrevista-churn.html" class="material-card">
+        <div class="mat-badge">novo</div>
+        <div class="mat-cat">Discovery · Template PRO</div>
+        <div class="mat-title">Entrevista de Churn e Análise de Saída</div>
+        <div class="mat-desc">Roteiro completo + ficha de análise para transformar cancelamentos em aprendizado de produto.</div>
+        <div class="mat-cta">Abrir template →</div>
+      </a>
+
+      <a href="pro-priorizacao-rice.html" class="material-card">
+        <div class="mat-badge">novo</div>
+        <div class="mat-cat">Priorização · Template PRO</div>
+        <div class="mat-title">Framework RICE — Planilha Preenchível</div>
+        <div class="mat-desc">Planilha RICE com guia de pontuação, armadilhas comuns e prompt de revisão crítica.</div>
+        <div class="mat-cta">Abrir template →</div>
+      </a>
+
+      <a href="pro-sprint-review.html" class="material-card">
+        <div class="mat-badge">novo</div>
+        <div class="mat-cat">Entrega · Template PRO</div>
+        <div class="mat-title">Sprint Review · Template de Facilitação</div>
+        <div class="mat-desc">Como conduzir Sprint Reviews que geram alinhamento real — não apenas show and tell.</div>
+        <div class="mat-cta">Abrir template →</div>
+      </a>
+
+    </div>
+
+    <hr>
+
+    <!-- MATERIAIS SENIORES -->
+    <div class="section-label">Guias seniores · Produto × Dados × IA</div>
+    <div class="section-title">A interseção que separa PMs bons de PMs excepcionais</div>
+    <p class="section-desc">Conteúdo sobre onde produto, dados e IA se encontram — o que PMs seniores já entendem e a maioria ainda está descobrindo.</p>
+
+    <div class="material-grid">
+
+      <a href="pm-dados-ia.html" class="material-card">
+        <div class="mat-cat">Dados & IA · Guia sênior</div>
+        <div class="mat-title">PM Orientado a Dados na Era da IA</div>
+        <div class="mat-desc">Os 4 níveis de maturidade, framework de decisão baseada em dados e métricas essenciais.</div>
+        <div class="mat-cta">Ler guia →</div>
+      </a>
+
+      <a href="agentes-ia-produto.html" class="material-card">
+        <div class="mat-cat">IA Aplicada · Guia sênior</div>
+        <div class="mat-title">Agentes de IA como Produto</div>
+        <div class="mat-desc">O que muda quando o core do produto é um agente — LLM, RAG, evals e métricas específicas.</div>
+        <div class="mat-cta">Ler guia →</div>
+      </a>
+
+      <a href="discovery-aumentado-ia.html" class="material-card">
+        <div class="mat-cat">Discovery & IA · Guia sênior</div>
+        <div class="mat-title">Discovery Aumentado por IA</div>
+        <div class="mat-desc">As 4 fontes de sinal, o ciclo em 4 fases e como triangular dados com IA.</div>
+        <div class="mat-cta">Ler guia →</div>
+      </a>
+
+    </div>
+
+    <hr>
+
+    <!-- STARTER KIT GRATUITO -->
+    <div class="section-label">Também incluído · Starter Kit gratuito</div>
+    <div class="section-title">Templates e prompts para o dia a dia</div>
+    <p class="section-desc">Os 8 templates do Starter Kit gratuito também estão disponíveis aqui.</p>
+
+    <div class="material-grid">
+      <a href="mapa-jornada.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Discovery</div>
+        <div class="mat-title">Mapa de Jornada do Usuário</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="roteiro-entrevista.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Discovery</div>
+        <div class="mat-title">Roteiro de Entrevista</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="roadmap-trimestral.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Roadmap</div>
+        <div class="mat-title">Roadmap Trimestral por OKR</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="priorizacao-ice.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Priorização</div>
+        <div class="mat-title">Framework ICE</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="prd-basico.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Entrega</div>
+        <div class="mat-title">PRD Básico</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="user-story.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Entrega</div>
+        <div class="mat-title">User Story com Critérios de Aceite</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="sintese-entrevistas.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Prompts IA</div>
+        <div class="mat-title">Síntese de Entrevistas com IA</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+      <a href="gerador-hipoteses.html" class="material-card" style="border-color:var(--cream2)">
+        <div class="mat-cat" style="color:var(--ink3)">Prompts IA</div>
+        <div class="mat-title">Gerador de Hipóteses</div>
+        <div class="mat-cta" style="color:var(--ink3)">Abrir →</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Senha admin — mude para a senha que quiser
+const SENHA_ADMIN = 'thais2025pro';
+const CHAVE_SESSION = 'pmkit_pro_acesso';
+
+function verificar() {
+  const input = document.getElementById('senha-input').value;
+  const erro = document.getElementById('lock-error');
+  if (input === SENHA_ADMIN) {
+    sessionStorage.setItem(CHAVE_SESSION, '1');
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('kit-content').style.display = 'block';
+    erro.style.display = 'none';
+  } else {
+    erro.style.display = 'block';
+    document.getElementById('senha-input').value = '';
+    document.getElementById('senha-input').focus();
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem(CHAVE_SESSION);
+  document.getElementById('lock-screen').style.display = 'flex';
+  document.getElementById('kit-content').style.display = 'none';
+  document.getElementById('senha-input').value = '';
+}
+
+// Manter sessão ativa enquanto o browser estiver aberto
+if (sessionStorage.getItem(CHAVE_SESSION) === '1') {
+  document.getElementById('lock-screen').style.display = 'none';
+  document.getElementById('kit-content').style.display = 'block';
+}
+</script>
+</body>
+</html>

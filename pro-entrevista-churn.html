@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrevista de Churn e Análise de Saída — Kit PRO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12)}.nav-back:hover{color:#fff}
+.nav-pro-badge{font-size:10px;font-weight:700;background:var(--accent);color:#fff;padding:3px 10px;border-radius:20px;letter-spacing:0.06em}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.pro-badge-header{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:16px;font-weight:700;color:var(--ink);margin:24px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+ul,ol{padding-left:20px;margin-bottom:14px}
+li{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:6px}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+/* TEMPLATE BLOCKS */
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--paper);resize:vertical;min-height:40px;outline:none;transition:border-color 0.15s}
+.tpl-input:focus{border-color:var(--accent)}
+/* AI PROMPTS */
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+/* PRINT */
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;margin-bottom:28px}
+.print-btn:hover{background:#44403c}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin:20px 0}
+thead{background:var(--cream)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+/* PRINT STYLES */
+@media print{
+  .nav,.print-btn,.ai-box{display:none!important}
+  body{background:#fff}
+  .content{margin-top:0}
+  .tpl-input{border:1px solid #ccc;background:#fff}
+  h2{page-break-before:auto}
+  .tpl-block{page-break-inside:avoid}
+}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="kit-pro.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-pro-badge">KIT PRO</span>
+    <a href="kit-pro.html" class="nav-back">← Voltar ao Kit PRO</a>
+  </div>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="pro-badge-header">
+      <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.08em;text-transform:uppercase">KIT PRO · EXCLUSIVO</span>
+      <span class="cat-tag">Templates PRO · Discovery</span>
+    </div>
+    <h1>Entrevista de Churn e Análise de Saída</h1>
+    <p class="page-desc">O roteiro completo para entrevistas de churn — e como transformar cancelamentos no seu melhor aprendizado de produto.</p>
+    <button class="print-btn" onclick="window.print()">⬇ Imprimir / Salvar como PDF</button>
+  </div>
+  
+<h2>O que é e quando usar</h2>
+<p>Entrevistas de churn são as mais valiosas e as mais negligenciadas em produto. Quem já cancelou não tem mais nada a perder sendo honesto — e você pode aprender em 30 minutos o que nenhum analytics vai te mostrar.</p>
+<div class="callout callout-teal"><strong>Meta:</strong> não tente salvar o cliente durante a entrevista. Se o objetivo for retenção, o usuário vai sentir e filtrar as respostas. O objetivo é aprender — isso vale mais do que recuperar um cliente.</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 1</span><span class="tpl-step-name">Perfil do churned user</span></div>
+  <div class="tpl-row"><div class="tpl-label">Empresa / nome</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Anonymize antes de compartilhar internamente se necessário"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Segmento</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Tamanho da empresa, indústria, cargo do entrevistado"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Tempo de conta</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Quanto tempo foi cliente? Chegou a ver valor?"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Como usava o produto</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Quais features usava com frequência? Qual o caso de uso principal?"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Plano / receita</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="MRR e plano — para contextualizar o impacto financeiro"></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 2</span><span class="tpl-step-name">Roteiro da entrevista</span></div>
+  <div class="tpl-row"><div class="tpl-label">P1 — Contexto</div><div class="tpl-value">"Me conta o contexto que te levou a cancelar. O que estava acontecendo no momento?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P2 — O gatilho</div><div class="tpl-value">"Qual foi o momento exato em que você decidiu cancelar? O que aconteceu?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P3 — O problema real</div><div class="tpl-value">"Se você tivesse que resumir em uma frase o principal motivo do cancelamento, qual seria?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P4 — Tentativa de resolver</div><div class="tpl-value">"Você tentou resolver isso conosco antes de cancelar? O que aconteceu?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P5 — Alternativa</div><div class="tpl-value">"O que você vai usar no lugar? O que te atraiu nessa alternativa?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P6 — O que ficou faltando</div><div class="tpl-value">"Se você pudesse mudar uma coisa no produto antes de cancelar, o que teria mudado sua decisão?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P7 — Voltaria?</div><div class="tpl-value">"Em que condições você voltaria a usar? O que precisaria mudar?"</div></div>
+  <div class="tpl-row"><div class="tpl-label">P8 — Indicaria?</div><div class="tpl-value">"Você indicaria o produto para alguém? Para que tipo de empresa/pessoa ele seria ideal?"</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 3</span><span class="tpl-step-name">Notas da entrevista</span></div>
+  <div class="tpl-row"><div class="tpl-label">Razão declarada</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que o cliente disse ser o motivo (pode não ser a razão real)"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Razão real (interpretada)</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que você acredita ser a causa raiz, baseado no contexto da entrevista inteira"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Citações diretas importantes</div><div class="tpl-value"><textarea class="tpl-input" rows="3" placeholder="Frases exatas do cliente que são reveladoras — entre aspas"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Alternativa escolhida</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Qual produto/solução o cliente migrou ou vai migrar"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Condição de retorno</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que precisaria mudar para o cliente voltar? (se informou)"></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 4</span><span class="tpl-step-name">Classificação do churn</span></div>
+  <div class="tpl-row"><div class="tpl-label">Categoria primária</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Produto / Preço / Concorrência / CS/Suporte / Fim de contrato / Situação externa / Fit errado desde início"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Era evitável?</div><div class="tpl-value"><textarea class="tpl-input" rows="1" placeholder="Sim / Não / Parcialmente — com justificativa"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Sinal de alerta precoce</div><div class="tpl-value"><textarea class="tpl-value" rows="2" placeholder="Havia sinais antes do cancelamento? O que poderia ter sido detectado mais cedo? Ex: Baixa frequência de uso nas últimas 4 semanas, nenhuma interação com CS nos últimos 2 meses."></textarea></div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Seção 5</span><span class="tpl-step-name">Ação e aprendizado</span></div>
+  <div class="tpl-row"><div class="tpl-label">Insight de produto</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que esse churn revela sobre o produto? O que deveria mudar?"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Padrão com outros churns</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="Esse motivo aparece em outros churns? Com que frequência?"></textarea></div></div>
+  <div class="tpl-row"><div class="tpl-label">Próxima ação</div><div class="tpl-value"><textarea class="tpl-input" rows="2" placeholder="O que você vai fazer com esse aprendizado? Ex: Investigar solução de alertas proativos. Escalar para GPM como bloqueador de retenção."></textarea></div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — identificar padrões em múltiplos churns</span></div>
+  <div class="ai-tip">Depois de 5+ entrevistas de churn, use IA para identificar os padrões — e separar o que é evitável do que é estrutural.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — análise de padrões de churn</div>
+    <div class="prompt-body">Analise os seguintes resumos de entrevistas de churn e identifique padrões.
+
+Entrevistas:
+<span class="prompt-var">[cole os resumos, um por linha ou separados por ---]</span>
+
+Por favor:
+1. Classifique os churns por categoria (produto, preço, concorrência, CS, fit)
+2. Identifique os 3 motivos mais frequentes com frequência (X de Y)
+3. Separe: churns evitáveis vs inevitáveis
+4. Identifique sinais de alerta precoces que apareceram nas entrevistas
+5. Liste as 3 mudanças de produto que poderiam ter evitado mais churns
+6. Qual segmento de clientes tem maior risco de churn baseado nos padrões?</div>
+  </div>
+</div>
+
+</div>
+</div>
+<footer style="text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px;background:var(--paper)">
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Kit PRO · Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="kit-pro.html" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:14px">← Voltar ao Kit PRO</a>
+</footer>
+</body>
+</html>
