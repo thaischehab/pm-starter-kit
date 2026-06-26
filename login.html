@@ -10,9 +10,10 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .box{background:#fafaf8;border-radius:16px;padding:48px;max-width:420px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,0.3)}
-.logo{font-family:'Lora',serif;font-size:18px;font-weight:700;color:#1c1917;text-align:center;margin-bottom:32px}
+.logo{font-family:'Lora',serif;font-size:18px;font-weight:700;color:#1c1917;text-align:center;margin-bottom:8px}
 .logo span{color:#c2410c}
-.tabs{display:flex;gap:4px;background:#f5f0e8;border-radius:10px;padding:4px;margin-bottom:28px}
+.logo-sub{font-size:13px;color:#78716c;text-align:center;margin-bottom:28px}
+.tabs{display:flex;gap:4px;background:#f5f0e8;border-radius:10px;padding:4px;margin-bottom:24px}
 .tab{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;color:#78716c;transition:all 0.15s}
 .tab.active{background:#fff;color:#1c1917;box-shadow:0 1px 4px rgba(28,25,23,0.1)}
 .label{font-size:12px;font-weight:600;color:#44403c;margin-bottom:6px;display:block}
@@ -21,25 +22,25 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;min-height:10
 .btn{width:100%;padding:13px;background:#c2410c;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;margin-top:4px}
 .btn:hover{background:#a73509}
 .btn:disabled{background:#e7e5e4;color:#a8a29e;cursor:not-allowed}
-.msg{font-size:13px;text-align:center;margin-top:14px;padding:10px;border-radius:8px;display:none}
+.msg{font-size:13px;text-align:center;margin-top:14px;padding:12px;border-radius:8px;display:none;line-height:1.55}
 .msg.error{background:#fee2e2;color:#991b1b}
 .msg.success{background:#f0fdf4;color:#166534}
+.msg.warn{background:#fff7ed;color:#7c2d12}
 .forgot{font-size:12px;color:#78716c;text-align:center;margin-top:12px;cursor:pointer;text-decoration:underline}
 .forgot:hover{color:#c2410c}
-.divider{text-align:center;font-size:12px;color:#a8a29e;margin:16px 0;position:relative}
-.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:#e7e5e4}
-.divider::before{left:0}.divider::after{right:0}
 .back{text-align:center;margin-top:20px;font-size:13px;color:#78716c}
 .back a{color:#c2410c;text-decoration:none;font-weight:600}
+.info-box{background:#fff7ed;border:1px solid rgba(194,65,12,0.2);border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:#7c2d12;line-height:1.6}
 </style>
 </head>
 <body>
 <div class="box">
   <div class="logo">PM<span>.</span>starterkit <span style="font-size:11px;background:#c2410c;color:#fff;padding:2px 8px;border-radius:20px;font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:0.06em;vertical-align:middle">PRO</span></div>
+  <div class="logo-sub">Área exclusiva para compradores</div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('login', this)">Entrar</button>
-    <button class="tab" onclick="switchTab('signup', this)">Criar conta</button>
+    <button class="tab active" id="tab-btn-login" onclick="switchTab('login')">Entrar</button>
+    <button class="tab" id="tab-btn-signup" onclick="switchTab('signup')">Primeiro acesso</button>
   </div>
 
   <!-- LOGIN -->
@@ -53,19 +54,19 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;min-height:10
     <div class="msg" id="msg-login"></div>
   </div>
 
-  <!-- SIGNUP -->
+  <!-- PRIMEIRO ACESSO (cadastro com verificação) -->
   <div id="tab-signup" style="display:none">
-    <label class="label">Nome</label>
-    <input class="input" type="text" id="signup-name" placeholder="Seu nome">
-    <label class="label">Email</label>
-    <input class="input" type="email" id="signup-email" placeholder="seu@email.com" autocomplete="email">
-    <label class="label">Senha</label>
+    <div class="info-box">
+      ⚠️ O acesso é exclusivo para quem comprou o Kit PRO. Seu email precisa estar cadastrado — use o mesmo email da compra.
+    </div>
+    <label class="label">Email da compra</label>
+    <input class="input" type="email" id="signup-email" placeholder="email usado na compra">
+    <label class="label">Crie sua senha</label>
     <input class="input" type="password" id="signup-pass" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
     <label class="label">Confirmar senha</label>
     <input class="input" type="password" id="signup-pass2" placeholder="Repita a senha" onkeydown="if(event.key==='Enter')doSignup()">
-    <button class="btn" id="btn-signup" onclick="doSignup()">Criar conta →</button>
+    <button class="btn" id="btn-signup" onclick="doSignup()">Ativar acesso →</button>
     <div class="msg" id="msg-signup"></div>
-    <p style="font-size:12px;color:#a8a29e;text-align:center;margin-top:12px">Ao criar conta você confirma que adquiriu o Kit PRO.</p>
   </div>
 
   <!-- RESET -->
@@ -75,7 +76,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;min-height:10
     <input class="input" type="email" id="reset-email" placeholder="seu@email.com">
     <button class="btn" onclick="doReset()">Enviar link →</button>
     <div class="msg" id="msg-reset"></div>
-    <div class="forgot" onclick="switchTab('login', document.querySelectorAll('.tab')[0])">← Voltar para login</div>
+    <div class="forgot" onclick="switchTab('login')">← Voltar para login</div>
   </div>
 
   <div class="back"><a href="index.html">← Voltar ao site</a></div>
@@ -84,8 +85,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;min-height:10
 <script>
 const _sb = supabase.createClient('https://uzocrlrvozpcbzkzbund.supabase.co', 'sb_publishable_qzHEgA53ylu6k0V_cvIaEQ_25SvQioC');
 
-// Redirecionar se já estiver logado
-_sb.auth.getSession().then(({ data: { session } }) => {
+// Redirecionar se já logado
+_sb.auth.getSession().then(({data:{session}}) => {
   if (session) window.location.href = 'kit-pro.html';
 });
 
@@ -96,22 +97,23 @@ function showMsg(id, text, type) {
   el.style.display = 'block';
 }
 
-function setLoading(btnId, loading) {
+function setLoading(btnId, loading, label) {
   const btn = document.getElementById(btnId);
   btn.disabled = loading;
-  btn.textContent = loading ? 'Aguarde...' : btn.dataset.label || btn.textContent;
+  btn.textContent = loading ? 'Aguarde...' : label;
 }
 
-function switchTab(name, el) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('tab-login').style.display = name === 'login' ? '' : 'none';
-  document.getElementById('tab-signup').style.display = name === 'signup' ? '' : 'none';
-  document.getElementById('tab-reset').style.display = name === 'reset' ? '' : 'none';
+function switchTab(name) {
+  document.getElementById('tab-btn-login').classList.toggle('active', name==='login');
+  document.getElementById('tab-btn-signup').classList.toggle('active', name==='signup');
+  document.getElementById('tab-login').style.display = name==='login' ? '' : 'none';
+  document.getElementById('tab-signup').style.display = name==='signup' ? '' : 'none';
+  document.getElementById('tab-reset').style.display = name==='reset' ? '' : 'none';
 }
 
 function showReset() {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-btn-login').classList.remove('active');
+  document.getElementById('tab-btn-signup').classList.remove('active');
   document.getElementById('tab-login').style.display = 'none';
   document.getElementById('tab-signup').style.display = 'none';
   document.getElementById('tab-reset').style.display = '';
@@ -121,36 +123,58 @@ async function doLogin() {
   const email = document.getElementById('login-email').value.trim();
   const pass = document.getElementById('login-pass').value;
   if (!email || !pass) return showMsg('msg-login', 'Preencha email e senha.', 'error');
-  setLoading('btn-login', true);
-  const { error } = await _sb.auth.signInWithPassword({ email, password: pass });
-  setLoading('btn-login', false);
-  if (error) return showMsg('msg-login', 'Email ou senha incorretos.', 'error');
+  setLoading('btn-login', true, 'Entrar →');
+  const {error} = await _sb.auth.signInWithPassword({email, password: pass});
+  setLoading('btn-login', false, 'Entrar →');
+  if (error) return showMsg('msg-login', 'Email ou senha incorretos. Verifique os dados.', 'error');
   window.location.href = 'kit-pro.html';
 }
 
 async function doSignup() {
-  const name = document.getElementById('signup-name').value.trim();
-  const email = document.getElementById('signup-email').value.trim();
+  const email = document.getElementById('signup-email').value.trim().toLowerCase();
   const pass = document.getElementById('signup-pass').value;
   const pass2 = document.getElementById('signup-pass2').value;
-  if (!name || !email || !pass) return showMsg('msg-signup', 'Preencha todos os campos.', 'error');
+
+  if (!email || !pass) return showMsg('msg-signup', 'Preencha todos os campos.', 'error');
   if (pass.length < 8) return showMsg('msg-signup', 'Senha deve ter pelo menos 8 caracteres.', 'error');
   if (pass !== pass2) return showMsg('msg-signup', 'As senhas não coincidem.', 'error');
-  setLoading('btn-signup', true);
-  const { error } = await _sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
-  setLoading('btn-signup', false);
-  if (error) return showMsg('msg-signup', 'Erro ao criar conta: ' + error.message, 'error');
-  showMsg('msg-signup', 'Conta criada! Verifique seu email para confirmar o acesso.', 'success');
+
+  setLoading('btn-signup', true, 'Ativar acesso →');
+
+  // Verificar se email está na lista de compradores aprovados
+  const {data: aprovado, error: errCheck} = await _sb
+    .from('compradores_aprovados')
+    .select('email')
+    .eq('email', email)
+    .single();
+
+  if (errCheck || !aprovado) {
+    setLoading('btn-signup', false, 'Ativar acesso →');
+    return showMsg('msg-signup',
+      'Este email não foi encontrado na nossa lista de compradores. Use o email com que você comprou o Kit PRO. Dúvidas? thaischehab@gmail.com',
+      'warn');
+  }
+
+  // Email aprovado — criar conta
+  const {error: errSignup} = await _sb.auth.signUp({
+    email,
+    password: pass,
+    options: { emailRedirectTo: 'https://thaischehab-pm-starter-kit.vercel.app/login.html' }
+  });
+
+  setLoading('btn-signup', false, 'Ativar acesso →');
+  if (errSignup) return showMsg('msg-signup', 'Erro: ' + errSignup.message, 'error');
+  showMsg('msg-signup', '✓ Conta criada! Verifique seu email para confirmar e depois faça login.', 'success');
 }
 
 async function doReset() {
   const email = document.getElementById('reset-email').value.trim();
   if (!email) return showMsg('msg-reset', 'Digite seu email.', 'error');
-  const { error } = await _sb.auth.resetPasswordForEmail(email, {
+  const {error} = await _sb.auth.resetPasswordForEmail(email, {
     redirectTo: 'https://thaischehab-pm-starter-kit.vercel.app/login.html'
   });
   if (error) return showMsg('msg-reset', 'Erro: ' + error.message, 'error');
-  showMsg('msg-reset', 'Link enviado! Verifique seu email.', 'success');
+  showMsg('msg-reset', '✓ Link enviado! Verifique seu email.', 'success');
 }
 </script>
 </body>
