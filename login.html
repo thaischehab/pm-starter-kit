@@ -171,7 +171,7 @@ async function doReset() {
   const email = document.getElementById('reset-email').value.trim();
   if (!email) return showMsg('msg-reset', 'Digite seu email.', 'error');
   const {error} = await _sb.auth.resetPasswordForEmail(email, {
-    redirectTo: 'https://thaischehab-pm-starter-kit.vercel.app/login.html'
+    redirectTo: 'https://thaischehab-pm-starter-kit.vercel.app/redefinir-senha.html'
   });
   if (error) return showMsg('msg-reset', 'Erro: ' + error.message, 'error');
   showMsg('msg-reset', '✓ Link enviado! Verifique seu email.', 'success');
