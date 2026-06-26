@@ -76,6 +76,15 @@ tr:last-child td{border-bottom:none}
 }
 @media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async function() {
+  const _sb = supabase.createClient('https://uzocrlrvozpcbzkzbund.supabase.co', 'sb_publishable_qzHEgA53ylu6k0V_cvIaEQ_25SvQioC');
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) window.location.href = 'login.html';
+  window._sb = _sb;
+})();
+</script>
 </head>
 <body>
 <nav class="nav">

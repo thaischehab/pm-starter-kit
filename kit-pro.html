@@ -53,6 +53,7 @@ h1{font-family:'Lora',serif;font-size:clamp(28px,4vw,44px);font-weight:700;color
 
 hr{border:none;border-top:1px solid var(--border);margin:44px 0}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -80,7 +81,7 @@ hr{border:none;border-top:1px solid var(--border);margin:44px 0}
 
   <!-- ADMIN BAR -->
   <div class="admin-bar">
-    <div><span class="admin-badge">ADMIN</span> Thais Chehab · acesso completo</div>
+    <div><span class="admin-badge">PRO</span> <span id="admin-name">carregando...</span></div>
     <span class="admin-logout" onclick="logout()">Sair</span>
   </div>
 
@@ -228,37 +229,32 @@ hr{border:none;border-top:1px solid var(--border);margin:44px 0}
 </div>
 
 <script>
-// Senha admin — mude para a senha que quiser
-const SENHA_ADMIN = 'thais2025pro';
-const CHAVE_SESSION = 'pmkit_pro_acesso';
+const _sb = supabase.createClient('https://uzocrlrvozpcbzkzbund.supabase.co', 'sb_publishable_qzHEgA53ylu6k0V_cvIaEQ_25SvQioC');
 
-function verificar() {
-  const input = document.getElementById('senha-input').value;
-  const erro = document.getElementById('lock-error');
-  if (input === SENHA_ADMIN) {
-    sessionStorage.setItem(CHAVE_SESSION, '1');
-    document.getElementById('lock-screen').style.display = 'none';
-    document.getElementById('kit-content').style.display = 'block';
-    erro.style.display = 'none';
-  } else {
-    erro.style.display = 'block';
-    document.getElementById('senha-input').value = '';
-    document.getElementById('senha-input').focus();
+let _user = null;
+
+async function initAuth() {
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
   }
-}
-
-function logout() {
-  sessionStorage.removeItem(CHAVE_SESSION);
-  document.getElementById('lock-screen').style.display = 'flex';
-  document.getElementById('kit-content').style.display = 'none';
-  document.getElementById('senha-input').value = '';
-}
-
-// Manter sessão ativa enquanto o browser estiver aberto
-if (sessionStorage.getItem(CHAVE_SESSION) === '1') {
+  _user = session.user;
+  // Mostrar conteúdo
   document.getElementById('lock-screen').style.display = 'none';
   document.getElementById('kit-content').style.display = 'block';
+  // Atualizar nome na admin bar
+  const name = _user.user_metadata?.full_name || _user.email;
+  const adminName = document.getElementById('admin-name');
+  if (adminName) adminName.textContent = name;
 }
+
+async function logout() {
+  await _sb.auth.signOut();
+  window.location.href = 'login.html';
+}
+
+initAuth();
 </script>
 </body>
 </html>
