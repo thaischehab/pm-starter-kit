@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentes de IA como Produto — PM Starter Kit PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none;cursor:pointer}.nav-logo span{color:#c2410c}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12);transition:all 0.15s}.nav-back:hover{color:#fff;border-color:rgba(255,255,255,0.3)}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.tpl-table thead{background:var(--cream)}
+.tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+.tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+.tpl-table tr:last-child td{border-bottom:none}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.ai-tip:last-child{border-bottom:none}
+.ai-tip strong{color:#0f5447}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+footer{text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <a href="index.html" class="nav-back">&#8592; Voltar</a>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="cat-tag" style="display:inline-flex;align-items:center;gap:8px">
+      <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;letter-spacing:0.08em">KIT PRO</span>
+      Kit PRO · IA Aplicada
+    </div>
+    <h1>Agentes de IA como Produto</h1>
+    <p class="page-desc">O que muda no trabalho de PM quando o produto em si é um agente — e o que você precisa saber para construir bem.</p>
+  </div>
+  
+<h2>O que muda quando o produto é um agente</h2>
+<p>Construir um produto com IA como funcionalidade é diferente de construir um produto que é fundamentalmente um agente de IA. Quando o core do produto é um agente — um sistema que percebe, raciocina e age de forma autônoma — todo o framework de produto muda.</p>
+<p>PMs que vêm de produtos tradicionais frequentemente aplicam os mesmos frameworks sem perceber que as suposições por baixo deles não se sustentam mais.</p>
+
+<div class="callout callout-warm"><strong>A maior diferença:</strong> em produtos tradicionais, você especifica o comportamento exato do sistema. Em produtos de agentes, você especifica o objetivo e o contexto — e o sistema decide como agir. Isso muda radicalmente como você faz discovery, escreve requisitos e define sucesso.</div>
+
+<h2>Os 5 fundamentos que todo PM de produtos de IA precisa entender</h2>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">01</span><span class="tpl-step-name">LLM — Large Language Model</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Um modelo de linguagem treinado em grandes volumes de texto para prever e gerar texto. É a camada de "raciocínio" da maioria dos agentes de IA atuais.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">LLMs têm um "corte" de conhecimento (training cutoff) e não têm memória entre conversas por padrão. Eles podem "alucinar" — gerar informações incorretas com confiança alta. O comportamento é probabilístico, não determinístico: a mesma entrada pode gerar saídas diferentes.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Você precisa projetar para falhas. Um agente que erra 5% das vezes em prod é um problema de produto — mesmo que tecnicamente esteja "funcionando".</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">02</span><span class="tpl-step-name">RAG — Retrieval Augmented Generation</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Técnica que combina um LLM com uma base de conhecimento específica. Em vez de depender só do conhecimento do modelo, o agente busca informações relevantes antes de responder.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">RAG é o que permite que um agente responda sobre documentos da sua empresa, dados do seu produto ou informações recentes sem re-treinar o modelo. A qualidade do output depende diretamente da qualidade dos documentos indexados.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">"Lixo entra, lixo sai" se aplica diretamente. Se os documentos da base de conhecimento estão desatualizados ou mal estruturados, o agente vai gerar respostas ruins. Curadoria de conteúdo vira requisito de produto.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">03</span><span class="tpl-step-name">Prompt Engineering</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">A prática de escrever instruções (prompts) que guiam o comportamento do modelo. É parte da especificação do produto — análogo a escrever regras de negócio em produtos tradicionais.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Prompts são frágeis — pequenas mudanças de formulação podem alterar significativamente o comportamento. System prompts definem a "personalidade" e os limites do agente. Prompt injection é um risco de segurança real.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">O system prompt é um artefato de produto, não só de engenharia. PM precisa estar envolvido na sua definição e evolução — ele define o que o agente pode e não pode fazer.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">04</span><span class="tpl-step-name">Latência e custo de inferência</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Cada chamada ao LLM tem um custo financeiro (por token processado) e um custo de tempo (latência de resposta). Em agentes com múltiplas chamadas encadeadas, isso escala rapidamente.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Modelos mais capazes são mais lentos e mais caros. Existe um trade-off constante entre qualidade do output, velocidade de resposta e custo por interação. Esse trade-off é uma decisão de produto.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Um agente que leva 8 segundos para responder tem um problema de produto mesmo que a resposta seja perfeita. Latência é uma feature de qualidade — precisa estar nas métricas de sucesso.</div></div>
+</div>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">05</span><span class="tpl-step-name">Avaliação de qualidade (Evals)</span></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">O processo de medir sistematicamente se um agente está se comportando como esperado. É o equivalente de testes automatizados para produtos de IA.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Diferente de bugs em código, falhas de agentes são graduais e probabilísticas. Um agente pode "funcionar" tecnicamente mas entregar uma experiência ruim. Evals definem o que "bom" significa — e PM precisa ser co-autor dessas definições.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Sem evals, você está voando cego. Cada mudança no prompt, no modelo ou na base de conhecimento pode degradar silenciosamente a qualidade. Evals são sua rede de segurança.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — escrever o system prompt de um agente</span></div>
+  <div class="ai-tip"><strong>O system prompt é onde você especifica o comportamento do agente como PM.</strong> Diferente de um PRD, ele é executado diretamente pelo modelo. Use IA para criar um rascunho e itere com o time técnico — mas o PM deve ser dono do conteúdo, não só de engenharia.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — rascunhar system prompt de um agente</div>
+    <div class="prompt-body">Vou construir um agente de IA com o seguinte propósito:
+<span class="prompt-var">[descreva o objetivo central do agente]</span>
+
+Usuário-alvo: <span class="prompt-var">[quem vai interagir com o agente]</span>
+Contexto de uso: <span class="prompt-var">[quando e como o usuário acessa o agente]</span>
+Restrições do negócio: <span class="prompt-var">[o que o agente NÃO pode fazer ou dizer]</span>
+Tom e personalidade: <span class="prompt-var">[como o agente deve se comunicar]</span>
+
+Crie um rascunho de system prompt que:
+1. Define claramente o papel e o objetivo do agente
+2. Especifica o que fazer em casos ambíguos
+3. Define limites explícitos (o que recusar ou escalar para humano)
+4. Instrui sobre tom, formato de resposta e nível de detalhe
+5. Inclui instruções para lidar com inputs fora do escopo
+
+Depois, liste 5 casos de borda que o system prompt precisa cobrir e que provavelmente ainda não cobre.</div>
+  </div>
+</div>
+
+<h2>Como fazer discovery para um produto de IA</h2>
+<p>Discovery para agentes tem uma camada extra: você precisa entender não só o problema do usuário, mas também o que é tecnicamente possível e confiável de resolver com IA no momento.</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Perguntas adicionais para discovery de IA</span></div>
+  <div class="tpl-row"><div class="tpl-label">Tolerância a erro</div><div class="tpl-value">"Se o agente errar, qual o impacto? O usuário vai perceber? Tem como corrigir?" Tarefas com baixa tolerância a erro (dados financeiros, diagnósticos) exigem supervisão humana explícita no fluxo.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Frequência e volume</div><div class="tpl-value">"Com que frequência isso acontece? Quantas vezes por dia o usuário faz isso?" Automação com IA faz mais sentido para tarefas repetitivas de alto volume do que para tarefas raras e complexas.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Dados disponíveis</div><div class="tpl-value">"Quais dados o agente precisa para responder bem? Temos esses dados? Estão estruturados e acessíveis?" Agentes são tão bons quanto os dados que recebem.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Conforto do usuário</div><div class="tpl-value">"O usuário está confortável delegando essa decisão para um sistema automatizado?" Autonomia do agente precisa ser calibrada com o nível de confiança do usuário — que é construído ao longo do tempo.</div></div>
+</div>
+
+<h2>Métricas para produtos de IA</h2>
+<div class="tpl-block">
+  <div class="tpl-row"><div class="tpl-label">Taxa de sucesso da tarefa</div><div class="tpl-value">Percentual de interações onde o agente completou a tarefa com sucesso do ponto de vista do usuário. É a métrica mais importante — e a mais difícil de medir automaticamente.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Taxa de escalação</div><div class="tpl-value">Com que frequência o agente precisa escalar para um humano? Alta taxa de escalação indica que o agente está fora do seu domínio de competência.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Taxa de correção pelo usuário</div><div class="tpl-value">Frequência com que o usuário rejeita, edita ou refaz o output do agente. É um sinal direto de qualidade percebida.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Latência P95</div><div class="tpl-value">O tempo de resposta do percentil 95 — não a média. Usuários julgam a experiência pelos momentos mais lentos, não pelos mais rápidos.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Custo por interação bem-sucedida</div><div class="tpl-value">Custo total de inferência dividido pelo número de interações que geraram valor para o usuário. Métrica de eficiência que conecta produto com financeiro.</div></div>
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — definir evals para um agente</span></div>
+  <div class="ai-tip"><strong>Evals são os critérios de aceite de um produto de IA.</strong> Antes de lançar qualquer mudança no agente, você precisa saber o que medir para confirmar que ele ainda está se comportando como esperado. Use IA para criar um conjunto inicial de casos de teste — e expanda com base nos erros reais que encontrar em produção.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — criar evals para um agente</div>
+    <div class="prompt-body">Preciso criar um conjunto de avaliações (evals) para o seguinte agente:
+
+Descrição do agente: <span class="prompt-var">[o que o agente faz]</span>
+Casos de uso principais: <span class="prompt-var">[liste os 3-5 principais]</span>
+Erros que já observei: <span class="prompt-var">[descreva falhas reais ou esperadas]</span>
+
+Crie um conjunto de evals com:
+1. 5 casos de teste para o fluxo principal (happy path)
+2. 5 casos de teste para situações ambíguas ou inputs mal formados
+3. 3 casos de teste para limites e restrições (o que o agente deve recusar)
+4. 2 casos de teste para inputs adversariais (tentativas de fazer o agente sair do escopo)
+
+Para cada caso, especifique:
+- Input do usuário
+- Output esperado (ou critérios para avaliar se o output é bom)
+- Como automatizar essa avaliação (ou por que precisa de avaliação humana)</div>
+  </div>
+</div>
+
+</div>
+</div>
+<footer>
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Criado por Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="index.html">&#8592; Voltar ao PM Starter Kit</a>
+</footer>
+</body>
+</html>
