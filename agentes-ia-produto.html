@@ -18,156 +18,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--i
 .cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
 h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
 .page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
-<!-- =====================================================================
-     NOVA SEÇÃO — vocabulário mínimo para conversar com engenharia
-     Inserir logo após a seção "Os 5 fundamentos..." e antes de
-     "Como fazer discovery para um produto de IA"
-     Classes CSS usadas: as mesmas já definidas em agentes-ia-produto.html
-     ===================================================================== -->
-
-<h2 id="vocabulario">O vocabulário mínimo para você conversar com quem constrói o agente</h2>
-
-<p>Você não precisa programar para tomar boas decisões sobre um agente de IA. Mas precisa entender as peças da arquitetura — porque cada uma tem implicações diretas de custo, confiabilidade e experiência do usuário. Quando engenharia disser "vamos precisar de um orquestrador" ou "esse fluxo tem erro cumulativo", você precisa traduzir isso em risco de produto, não só assentir.</p>
-
-<div class="intro-box">
-  <p><strong>Por que isso importa para você, PM:</strong> a maioria das decisões de arquitetura de agentes parece técnica, mas tem consequências diretas de produto — custo por interação, tolerância a erro, velocidade de resposta e onde o usuário pode ser prejudicado por uma falha silenciosa. Entender o vocabulário é o pré-requisito para ter uma opinião fundamentada nessas conversas.</p>
-</div>
-
-<!-- TABELA: as peças de um agente -->
-<div class="section-num">As peças de qualquer agente</div>
-<h3>Cérebro, ferramentas, instruções e memória</h3>
-
-<p>Todo agente, independente da complexidade, é composto pelas mesmas 4 peças. Saber o que cada uma faz — e qual decisão de produto cabe a você sobre ela — é o vocabulário mínimo para entrar na conversa com engenharia.</p>
-
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>Peça</th>
-        <th>O que é</th>
-        <th>Decisão de produto que cabe ao PM</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Cérebro (modelo)</strong></td>
-        <td>O LLM que recebe a instrução, raciocina e decide o que fazer. Ele não executa nada sozinho — só decide e pede para as ferramentas agirem.</td>
-        <td>Qual nível de raciocínio essa tarefa exige? Um modelo mais caro e lento se justifica, ou um mais rápido e barato resolve?</td>
-      </tr>
-      <tr>
-        <td><strong>Ferramentas</strong></td>
-        <td>As ações que o agente pode executar no mundo real: buscar na web, ler um arquivo, enviar mensagem, consultar um banco de dados.</td>
-        <td>Quais ferramentas o agente realmente precisa? Cada ferramenta extra é superfície de risco e de custo.</td>
-      </tr>
-      <tr>
-        <td><strong>Instruções</strong></td>
-        <td>O manual do agente — define quem ele é, o que pode e não pode fazer, e o que conta como sucesso. Geralmente um arquivo de texto ou system prompt.</td>
-        <td>As regras de "o que nunca fazer" deveriam vir de você, não só de engenharia. PM é co-autor das instruções.</td>
-      </tr>
-      <tr>
-        <td><strong>Memória</strong></td>
-        <td>O que o agente lembra entre execuções — pode ser um arquivo simples, banco de dados ou banco vetorial para buscas semânticas.</td>
-        <td>O agente precisa lembrar de interações passadas? Isso é decisão de produto — memória mal dimensionada gera custo de API fora de controle.</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- SEÇÃO: agente vs subagente vs orquestrador -->
-<div class="section-num">Arquitetura</div>
-<h3>Agente, subagente e orquestrador — quando cada um aparece</h3>
-
-<div class="decision">
-  <div class="decision-node">
-    <div class="decision-q">Agente</div>
-    <div class="decision-text">O sistema principal que interage com o usuário final, recebe o objetivo e decide como agir. É o que o usuário "vê".</div>
-  </div>
-  <div class="decision-node">
-    <div class="decision-q">Subagente</div>
-    <div class="decision-text">Um agente menor e especialista em uma única tarefa técnica, ativado pelo agente principal. <strong>Não fala direto com o usuário</strong> — só executa e devolve resultado. Aparece quando a tarefa principal é complexa demais para um agente único sem perder contexto.</div>
-  </div>
-  <div class="decision-node">
-    <div class="decision-q">Orquestrador</div>
-    <div class="decision-text">Um agente "gerente" que distribui tarefas entre subagentes, valida os resultados e decide se a tarefa está concluída. <strong>Se ninguém está validando o resultado antes de o usuário ver — isso é risco de produto, não só decisão técnica.</strong></div>
-  </div>
-</div>
-
-<div class="callout callout-orange">
-  <span class="callout-icon">💡</span>
-  <strong>Pergunta para fazer em qualquer revisão de arquitetura:</strong> "Quem está validando o resultado final antes de chegar ao usuário?" Se a resposta for "ninguém" ou "o próprio agente", isso precisa ser resolvido antes de ir para produção.
-</div>
-
-<!-- SEÇÃO: os 4 níveis -->
-<div class="section-num">Complexidade</div>
-<h3>Os 4 níveis de complexidade — e por que escolher o errado é decisão de produto</h3>
-
-<p>Superdimensionar a arquitetura custa tempo e dinheiro. Subdimensionar gera um agente que trava ou alucina quando a tarefa cresce. O nível certo depende da tolerância a erro do problema — não da disponibilidade técnica do time.</p>
-
-<div class="decision">
-  <div class="decision-node">
-    <div class="decision-q">N1</div>
-    <div class="decision-text"><strong>Loop simples — agente único.</strong> Resolve uma pergunta, chama uma ferramenta, responde. Fácil e rápido de construir. Ponto cego: perde o fio da meada em tarefas longas — a janela de memória estoura e o agente esquece o que estava fazendo.</div>
-  </div>
-  <div class="decision-node">
-    <div class="decision-q">N2</div>
-    <div class="decision-text"><strong>Linha de montagem sequencial.</strong> Agentes especialistas em sequência fixa: pesquisa → escreve → revisa. Ponto cego: <strong>erro cumulativo</strong> — se o primeiro agente errar, o problema se propaga até o fim sem ninguém poder voltar atrás.</div>
-  </div>
-  <div class="decision-node">
-    <div class="decision-q">N3</div>
-    <div class="decision-text"><strong>Orquestração centralizada.</strong> Um agente gerente divide a tarefa, aciona especialistas e valida o resultado antes de entregar. Ponto cego: se o orquestrador e os especialistas usam o mesmo modelo, tendem a compartilhar os mesmos erros de julgamento.</div>
-  </div>
-  <div class="decision-node">
-    <div class="decision-q">N4</div>
-    <div class="decision-text"><strong>Grafos de estado.</strong> O fluxo é mapeado como uma máquina de estados — cada decisão segue regras estritas de código, não só a "vontade" do modelo. Permite aprovação humana no meio do processo e retomar de onde parou em caso de falha. Vale a pena para fluxos críticos; é overengineering para tarefas simples.</div>
-  </div>
-</div>
-
-<!-- SEÇÃO: erro cumulativo -->
-<div class="section-num">Risco</div>
-<h3>Erro cumulativo — a resposta prática para "o que acontece quando o agente decide errado?"</h3>
-
-<p>Em fluxos sequenciais (N2), um erro do primeiro agente contamina todos os seguintes sem possibilidade de voltar atrás. É uma das causas mais comuns de falhas silenciosas em produção — o sistema "funciona" tecnicamente, mas entrega resultado ruim que ninguém pegou antes do usuário.</p>
-
-<div class="callout callout-red">
-  <span class="callout-icon">⚠️</span>
-  <strong>Antes de aprovar qualquer arquitetura sequencial, pergunte:</strong> "Em qual etapa um erro pode ser detectado e corrigido antes de chegar ao usuário?" Se a resposta for "em nenhuma", o fluxo está subdimensionado para o risco que carrega.
-</div>
-
-<!-- PROMPT BLOCK -->
-<div class="prompt-block">
-  <div class="prompt-header">
-    <span>🤖</span>
-    <span class="prompt-label">IA na prática — definir a complexidade certa para o seu agente</span>
-  </div>
-  <div class="prompt-body">Quero estruturar um agente de IA para o seguinte problema:
-
-Problema que o agente resolve: <span class="prompt-var">[descreva o objetivo central]</span>
-Tolerância a erro: <span class="prompt-var">[o que acontece se o agente errar? quem absorve o erro?]</span>
-Volume e frequência: <span class="prompt-var">[quantas interações por dia/mês?]</span>
-Etapas envolvidas: <span class="prompt-var">[liste as etapas que o agente precisa cumprir]</span>
-
-Com base nisso, me ajude a responder:
-1. Esse problema é mais parecido com uma pergunta única, uma sequência
-   de passos fixa, ou algo que precisa de validação humana no meio?
-2. Em qual etapa um erro poderia passar sem ser percebido — e o que
-   isso significa em termos de risco de produto?
-3. Esse problema justifica múltiplos agentes (subagentes + orquestrador),
-   ou um agente único resolve bem?
-
-Liste os trade-offs de cada nível de complexidade aplicado
-especificamente a esse problema.</div>
-</div>
-
-<!-- =====================================================================
-     TRECHO DA SIDEBAR — adicionar ao bloco .sidebar-module existente
-     Exemplo de posicionamento: logo após o item de "Os 5 fundamentos"
-     ===================================================================== -->
-<!--
-  <div class="sidebar-item" onclick="scrollTo('vocabulario')">
-    <span class="num">06</span> Vocabulário para falar com engenharia
-  </div>
--->
-  h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
 h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
 h3{font-size:15px;font-weight:600;color:var(--ink);margin:20px 0 10px}
 p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
@@ -184,16 +35,13 @@ strong{color:var(--ink);font-weight:600}
 .tpl-row:last-child{border-bottom:none}
 .tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
 .tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
-.tpl-positive{color:#166534}.tpl-negative{color:#991b1b}.tpl-neutral{color:#854d0e}
 .tpl-table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
 .tpl-table thead{background:var(--cream)}
 .tpl-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
 .tpl-table td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
 .tpl-table tr:last-child td{border-bottom:none}
-.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
 .tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
 .tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
-.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
 .ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
 .ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
 .ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
@@ -234,7 +82,7 @@ footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px
     <h1>Agentes de IA como Produto</h1>
     <p class="page-desc">O que muda no trabalho de PM quando o produto em si é um agente — e o que você precisa saber para construir bem.</p>
   </div>
-  
+
 <h2>O que muda quando o produto é um agente</h2>
 <p>Construir um produto com IA como funcionalidade é diferente de construir um produto que é fundamentalmente um agente de IA. Quando o core do produto é um agente — um sistema que percebe, raciocina e age de forma autônoma — todo o framework de produto muda.</p>
 <p>PMs que vêm de produtos tradicionais frequentemente aplicam os mesmos frameworks sem perceber que as suposições por baixo deles não se sustentam mais.</p>
@@ -245,27 +93,37 @@ footer a{color:var(--accent);text-decoration:none;font-weight:600;font-size:14px
 
 <div class="tpl-block">
   <div class="tpl-header"><span class="tpl-step-num">01</span><span class="tpl-step-name">LLM — Large Language Model</span></div>
-  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Um modelo de linguagem treinado em grandes volumes de texto para prever e gerar texto. É a camada de "raciocínio" da maioria dos agentes de IA atuais.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">LLMs têm um "corte" de conhecimento (training cutoff) e não têm memória entre conversas por padrão. Eles podem "alucinar" — gerar informações incorretas com confiança alta. O comportamento é probabilístico, não determinístico: a mesma entrada pode gerar saídas diferentes.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Você precisa projetar para falhas. Um agente que erra 5% das vezes em prod é um problema de produto — mesmo que tecnicamente esteja "funcionando".</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Um modelo de linguagem treinado em grandes volumes de texto para prever e gerar texto. É a camada de "raciocínio" da maioria dos agentes de IA atuais.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">LLMs têm um "corte" de conhecimento (training cutoff) e não têm memória entre conversas por padrão. Eles podem "alucinar" — gerar informações incorretas com confiança alta. O comportamento é probabilístico, não determinístico: a mesma entrada pode gerar saídas diferentes.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Você precisa projetar para falhas. Um agente que erra 5% das vezes em prod é um problema de produto — mesmo que tecnicamente esteja "funcionando".</div></div>
 </div>
 
 <div class="tpl-block">
   <div class="tpl-header"><span class="tpl-step-num">02</span><span class="tpl-step-name">RAG — Retrieval Augmented Generation</span></div>
-  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Técnica que combina um LLM com uma base de conhecimento específica. Em vez de depender só do conhecimento do modelo, o agente busca informações relevantes antes de responder.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">RAG é o que permite que um agente responda sobre documentos da sua empresa, dados do seu produto ou informações recentes sem re-treinar o modelo. A qualidade do output depende diretamente da qualidade dos documentos indexados.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">"Lixo entra, lixo sai" se aplica diretamente. Se os documentos da base de conhecimento estão desatualizados ou mal estruturados, o agente vai gerar respostas ruins. Curadoria de conteúdo vira requisito de produto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Técnica que combina um LLM com uma base de conhecimento específica. Em vez de depender só do conhecimento do modelo, o agente busca informações relevantes antes de responder.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">RAG é o que permite que um agente responda sobre documentos da sua empresa, dados do seu produto ou informações recentes sem re-treinar o modelo. A qualidade do output depende diretamente da qualidade dos documentos indexados.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">"Lixo entra, lixo sai" se aplica diretamente. Se os documentos da base de conhecimento estão desatualizados ou mal estruturados, o agente vai gerar respostas ruins. Curadoria de conteúdo vira requisito de produto.</div></div>
 </div>
 
 <div class="tpl-block">
   <div class="tpl-header"><span class="tpl-step-num">03</span><span class="tpl-step-name">Prompt Engineering</span></div>
-  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">A prática de escrever instruções (prompts) que guiam o comportamento do modelo. É parte da especificação do produto — análogo a escrever regras de negócio em produtos tradicionais.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Prompts são frágeis — pequenas mudanças de formulação podem alterar significativamente o comportamento. System prompts definem a "personalidade" e os limites do agente. Prompt injection é um risco de segurança real.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">O system prompt é um artefato de produto, não só de engenharia. PM precisa estar envolvido na sua definição e evolução — ele define o que o agente pode e não pode fazer.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">A prática de escrever instruções (prompts) que guiam o comportamento do modelo. É parte da especificação do produto — análogo a escrever regras de negócio em produtos tradicionais.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Prompts são frágeis — pequenas mudanças de formulação podem alterar significativamente o comportamento. System prompts definem a "personalidade" e os limites do agente. Prompt injection é um risco de segurança real.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">O system prompt é um artefato de produto, não só de engenharia. PM precisa estar envolvido na sua definição e evolução — ele define o que o agente pode e não pode fazer.</div></div>
 </div>
 
 <div class="tpl-block">
   <div class="tpl-header"><span class="tpl-step-num">04</span><span class="tpl-step-name">Latência e custo de inferência</span></div>
-  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Cada chamada ao LLM tem um custo financeiro (por token processado) e um custo de tempo (latência de resposta). Em agentes com múltiplas chamadas encadeadas, isso escala rapidamente.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Modelos mais capazes são mais lentos e mais caros. Existe um trade-off constante entre qualidade do output, velocidade de resposta e custo por interação. Esse trade-off é uma decisão de produto.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Um agente que leva 8 segundos para responder tem um problema de produto mesmo que a resposta seja perfeita. Latência é uma feature de qualidade — precisa estar nas métricas de sucesso.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">Cada chamada ao LLM tem um custo financeiro (por token processado) e um custo de tempo (latência de resposta). Em agentes com múltiplas chamadas encadeadas, isso escala rapidamente.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Modelos mais capazes são mais lentos e mais caros. Existe um trade-off constante entre qualidade do output, velocidade de resposta e custo por interação. Esse trade-off é uma decisão de produto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Um agente que leva 8 segundos para responder tem um problema de produto mesmo que a resposta seja perfeita. Latência é uma feature de qualidade — precisa estar nas métricas de sucesso.</div></div>
 </div>
 
 <div class="tpl-block">
   <div class="tpl-header"><span class="tpl-step-num">05</span><span class="tpl-step-name">Avaliação de qualidade (Evals)</span></div>
-  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">O processo de medir sistematicamente se um agente está se comportando como esperado. É o equivalente de testes automatizados para produtos de IA.</div></div><div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Diferente de bugs em código, falhas de agentes são graduais e probabilísticas. Um agente pode "funcionar" tecnicamente mas entregar uma experiência ruim. Evals definem o que "bom" significa — e PM precisa ser co-autor dessas definições.</div></div><div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Sem evals, você está voando cego. Cada mudança no prompt, no modelo ou na base de conhecimento pode degradar silenciosamente a qualidade. Evals são sua rede de segurança.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que é</div><div class="tpl-value">O processo de medir sistematicamente se um agente está se comportando como esperado. É o equivalente de testes automatizados para produtos de IA.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que o PM precisa saber</div><div class="tpl-value">Diferente de bugs em código, falhas de agentes são graduais e probabilísticas. Um agente pode "funcionar" tecnicamente mas entregar uma experiência ruim. Evals definem o que "bom" significa — e PM precisa ser co-autor dessas definições.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Impacto no produto</div><div class="tpl-value">Sem evals, você está voando cego. Cada mudança no prompt, no modelo ou na base de conhecimento pode degradar silenciosamente a qualidade. Evals são sua rede de segurança.</div></div>
 </div>
 
 <div class="ai-box">
@@ -291,6 +149,75 @@ Crie um rascunho de system prompt que:
 Depois, liste 5 casos de borda que o system prompt precisa cobrir e que provavelmente ainda não cobre.</div>
   </div>
 </div>
+
+<!-- ============================================================
+     NOVA SEÇÃO: vocabulário mínimo para conversar com engenharia
+     ============================================================ -->
+<h2 id="vocabulario">O vocabulário mínimo para você conversar com quem constrói o agente</h2>
+
+<p>Você não precisa programar para tomar boas decisões sobre um agente de IA. Mas precisa entender as peças da arquitetura — porque cada uma tem implicações diretas de custo, confiabilidade e experiência do usuário. Quando engenharia disser "vamos precisar de um orquestrador" ou "esse fluxo tem erro cumulativo", você precisa traduzir isso em risco de produto, não só assentir.</p>
+
+<div class="callout callout-warm"><strong>Por que isso importa para você, PM:</strong> a maioria das decisões de arquitetura de agentes parece técnica, mas tem consequências diretas de produto — custo por interação, tolerância a erro e onde o usuário pode ser prejudicado por uma falha silenciosa. Entender o vocabulário é o pré-requisito para ter opinião fundamentada nessas conversas.</div>
+
+<h3>As 4 peças de qualquer agente</h3>
+<p>Todo agente, independente da complexidade, é composto pelas mesmas 4 peças. Saber o que cada uma faz — e qual decisão de produto cabe a você — é o vocabulário mínimo para entrar na conversa com engenharia.</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Peça</span><span class="tpl-step-name">O que é · Decisão que cabe ao PM</span></div>
+  <div class="tpl-row"><div class="tpl-label">Cérebro (modelo)</div><div class="tpl-value">O LLM que recebe a instrução, raciocina e decide o que fazer — não executa nada sozinho. <strong>Decisão de produto:</strong> qual nível de raciocínio essa tarefa exige? Um modelo mais caro e lento se justifica, ou um mais rápido e barato resolve?</div></div>
+  <div class="tpl-row"><div class="tpl-label">Ferramentas</div><div class="tpl-value">As ações que o agente pode executar no mundo real: buscar na web, ler um arquivo, enviar mensagem, consultar banco de dados. <strong>Decisão de produto:</strong> quais ferramentas o agente realmente precisa? Cada ferramenta extra é superfície de risco e de custo.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Instruções</div><div class="tpl-value">O manual do agente — define quem ele é, o que pode e não pode fazer, e o que conta como sucesso. Geralmente um system prompt. <strong>Decisão de produto:</strong> as regras de "o que nunca fazer" deveriam vir de você, não só de engenharia.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Memória</div><div class="tpl-value">O que o agente lembra entre execuções — pode ser um arquivo simples, banco de dados ou banco vetorial. <strong>Decisão de produto:</strong> o agente precisa lembrar de interações passadas? Memória mal dimensionada gera custo de API fora de controle.</div></div>
+</div>
+
+<h3>Agente, subagente e orquestrador — quando cada um aparece</h3>
+
+<div class="tpl-block">
+  <div class="tpl-row"><div class="tpl-label">Agente</div><div class="tpl-value">O sistema principal que interage com o usuário final, recebe o objetivo e decide como agir. É o que o usuário "vê".</div></div>
+  <div class="tpl-row"><div class="tpl-label">Subagente</div><div class="tpl-value">Um agente menor e especialista em uma única tarefa técnica, ativado pelo agente principal. Não fala direto com o usuário — só executa e devolve resultado. Aparece quando a tarefa principal é complexa demais para um agente único sem perder contexto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Orquestrador</div><div class="tpl-value">Um agente "gerente" que distribui tarefas entre subagentes, valida os resultados e decide se a tarefa está concluída. <strong>Se ninguém está validando o resultado antes de o usuário ver — isso é risco de produto, não só decisão técnica.</strong></div></div>
+</div>
+
+<h3>Os 4 níveis de complexidade — escolher o errado é decisão de produto</h3>
+<p>Superdimensionar a arquitetura custa tempo e dinheiro. Subdimensionar gera um agente que trava quando a tarefa cresce. O nível certo depende da tolerância a erro do problema — não da disponibilidade técnica do time.</p>
+
+<div class="tpl-block">
+  <div class="tpl-row"><div class="tpl-label">N1 — Loop simples</div><div class="tpl-value">Um agente único: recebe a pergunta, chama uma ferramenta, responde. Fácil e rápido de construir. <strong>Ponto cego:</strong> perde o fio da meada em tarefas longas — a janela de memória estoura e o agente esquece o contexto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">N2 — Linha de montagem</div><div class="tpl-value">Agentes especialistas em sequência fixa: pesquisa → escreve → revisa. <strong>Ponto cego:</strong> erro cumulativo — se o primeiro agente errar, o problema contamina todos os seguintes sem possibilidade de voltar atrás.</div></div>
+  <div class="tpl-row"><div class="tpl-label">N3 — Orquestração</div><div class="tpl-value">Um agente gerente divide a tarefa, aciona especialistas e valida o resultado antes de entregar. <strong>Ponto cego:</strong> se o orquestrador e os especialistas usam o mesmo modelo, tendem a compartilhar os mesmos erros de julgamento.</div></div>
+  <div class="tpl-row"><div class="tpl-label">N4 — Grafos de estado</div><div class="tpl-value">O fluxo segue regras estritas de código, com aprovação humana no meio do processo e retomada em caso de falha. Mais confiável para fluxos críticos — mas overengineering para tarefas simples.</div></div>
+</div>
+
+<div class="callout callout-warm"><strong>Pergunta para levar à próxima reunião com engenharia:</strong> "Esse problema é mais parecido com uma pergunta única, uma sequência de passos, ou algo que precisa de aprovação humana no meio do caminho?" A resposta já indica qual nível faz sentido — antes de qualquer linha de código ser escrita.</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — definir a complexidade certa para o seu agente</span></div>
+  <div class="ai-tip"><strong>Antes de validar qualquer arquitetura proposta por engenharia, use a IA para estruturar o raciocínio.</strong> Isso te dá vocabulário e critério para a conversa, mesmo sem ser você quem decide a implementação técnica.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — definir o nível de complexidade de um agente</div>
+    <div class="prompt-body">Quero estruturar um agente de IA para o seguinte problema:
+
+Problema que o agente resolve: <span class="prompt-var">[descreva o objetivo central]</span>
+Tolerância a erro: <span class="prompt-var">[o que acontece se o agente errar? quem absorve o erro?]</span>
+Volume e frequência: <span class="prompt-var">[quantas interações por dia/mês?]</span>
+Etapas envolvidas: <span class="prompt-var">[liste as etapas que o agente precisa cumprir]</span>
+
+Com base nisso, me ajude a responder:
+1. Esse problema é mais parecido com uma pergunta única, uma sequência
+   de passos fixa, ou algo que precisa de validação humana no meio?
+2. Em qual etapa um erro poderia passar sem ser percebido — e o que
+   isso significa em termos de risco de produto?
+3. Esse problema justifica múltiplos agentes (subagentes + orquestrador),
+   ou um agente único resolve bem?
+
+Liste os trade-offs de cada nível de complexidade aplicado
+especificamente a esse problema.</div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FIM DA NOVA SEÇÃO
+     ============================================================ -->
 
 <h2>Como fazer discovery para um produto de IA</h2>
 <p>Discovery para agentes tem uma camada extra: você precisa entender não só o problema do usuário, mas também o que é tecnicamente possível e confiável de resolver com IA no momento.</p>
