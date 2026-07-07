@@ -27,11 +27,28 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--i
 .nav-link{padding:6px 14px;border-radius:40px;font-size:13px;font-weight:500;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,0.55);transition:all 0.15s;font-family:inherit;white-space:nowrap}
 .nav-link:hover{background:rgba(255,255,255,0.1);color:#fff}
 .nav-link.active{background:var(--accent);color:#fff}
-.nav-link.pro{color:var(--accent);font-weight:600}
-.nav-link.pro:hover{background:rgba(194,65,12,0.2)}
+.nav-link.pro{color:rgba(255,255,255,0.55)}
+.nav-link.pro:hover{background:rgba(255,255,255,0.1);color:#fff}
 
 /* HERO */
 .hero{background:#1c1917;min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding:100px 48px 60px;position:relative;overflow:hidden}
+.hero-visual{position:absolute;right:48px;top:50%;transform:translateY(-50%);width:280px;perspective:1200px;opacity:0;animation:fadeUp 0.8s 0.6s forwards}
+.stack{position:relative;width:100%;height:260px}
+.mini-card{position:absolute;width:230px;background:#fff;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,0.45);padding:16px 18px;transition:transform 0.4s ease;transform:rotate(var(--r)) translate(var(--x),var(--y))}
+.mini-card .mtag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:3px 8px;border-radius:20px;margin-bottom:10px;background:#fff7ed;color:var(--accent)}
+.mini-card .mtitle{font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:var(--ink);margin-bottom:10px}
+.mini-card .mbar{height:6px;border-radius:4px;background:#f1efec;overflow:hidden;margin-bottom:6px}
+.mini-card .mbar span{display:block;height:100%;border-radius:4px}
+.mcard-1{--r:-7deg;--x:-10px;--y:-20px;z-index:1}
+.mcard-1 .mbar:nth-of-type(1) span{width:85%;background:var(--accent)}
+.mcard-1 .mbar:nth-of-type(2) span{width:55%;background:#e8964a}
+.mcard-2{--r:4deg;--x:30px;--y:50px;z-index:2}
+.mcard-2 .mtag{background:#f0fdfa;color:#0f766e}
+.mcard-2 .mbar:nth-of-type(1) span{width:70%;background:#0f766e}
+.mcard-2 .mbar:nth-of-type(2) span{width:40%;background:#5eead4}
+.stack:hover .mcard-1{transform:rotate(-10deg) translate(-20px,-30px)}
+.stack:hover .mcard-2{transform:rotate(6deg) translate(38px,60px)}
+@media(max-width:900px){.hero-visual{display:none}}
 .hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 75% 35%,rgba(194,65,12,0.13) 0%,transparent 70%)}
 .hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:28px;opacity:0;animation:fadeUp 0.6s 0.2s forwards}
 .hero-title{font-family:'Lora',Georgia,serif;font-size:clamp(40px,5.5vw,72px);font-weight:700;color:#fff;line-height:1.08;letter-spacing:-0.02em;margin-bottom:24px;max-width:720px;opacity:0;animation:fadeUp 0.7s 0.35s forwards}
@@ -74,8 +91,10 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
 
 /* HOME GRID */
 .home-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:48px}
-.home-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.home-card{position:relative;overflow:hidden;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.home-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--bar-color,var(--accent));opacity:0.75;transition:height 0.2s,opacity 0.2s}
 .home-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.home-card:hover::before{height:4px;opacity:1}
 .home-card-icon{font-size:26px;margin-bottom:16px}
 .home-card-label{font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
 .home-card-title{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px}
@@ -102,9 +121,9 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
 
 /* PRO */
 .pro-hero{padding:60px 0 48px;border-bottom:1px solid var(--border);margin-bottom:48px}
-.module{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.module{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--mod-color,var(--accent));border-radius:var(--r-lg);margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
 .module-header{display:flex;align-items:center;gap:14px;padding:18px 22px;cursor:pointer}
-.module-num{font-size:11px;font-weight:700;color:var(--accent);width:22px;flex-shrink:0}
+.module-num{font-size:11px;font-weight:700;color:var(--mod-color,var(--accent));width:22px;flex-shrink:0}
 .module-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink);flex:1;line-height:1.3}
 .module-count{font-size:11px;color:var(--ink3);background:var(--cream);padding:2px 10px;border-radius:20px;flex-shrink:0}
 .module-arrow{font-size:11px;color:var(--ink3);transition:transform 0.2s}
@@ -113,7 +132,7 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
 .module.open .module-body{display:block}
 .module-item{font-size:13px;color:var(--ink2);padding:6px 0;display:flex;gap:10px;border-bottom:1px solid var(--cream2);line-height:1.55}
 .module-item:last-child{border-bottom:none}
-.module-item::before{content:"→";color:var(--accent);flex-shrink:0;font-weight:600}
+.module-item::before{content:"→";color:var(--mod-color,var(--accent));flex-shrink:0;font-weight:600}
 .guarantee{background:var(--teal-dim);border:1px solid rgba(15,118,110,0.2);border-radius:var(--r-lg);padding:20px 24px;display:flex;gap:16px;align-items:flex-start;margin:28px 0}
 .guarantee-icon{font-size:24px}
 .guarantee h4{font-size:14px;font-weight:600;color:var(--teal);margin-bottom:4px}
@@ -213,11 +232,24 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
     </div>
     <div class="hero-ctas">
       <button class="btn-primary" onclick="navTo('kit')">Acessar gratuitamente</button>
-      <div style="position:relative;display:inline-block">
-        <button class="btn-ghost" style="opacity:0.7;cursor:default;pointer-events:none">Ver Kit PRO →</button>
-        <span style="position:absolute;top:-10px;right:-8px;background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.06em;text-transform:uppercase;white-space:nowrap">Em desenvolvimento</span>
-      </div>
+      <a href="kit-pro.html" target="_blank" class="btn-ghost">Ver Kit PRO →</a>
     </div>
+<div class="hero-visual" aria-hidden="true">
+<div class="stack">
+<div class="mini-card mcard-1">
+<span class="mtag">Priorização</span>
+<div class="mtitle">ICE Score</div>
+<div class="mbar"><span></span></div>
+<div class="mbar"><span></span></div>
+</div>
+<div class="mini-card mcard-2">
+<span class="mtag">Roadmap</span>
+<div class="mtitle">Q3 · OKRs</div>
+<div class="mbar"><span></span></div>
+<div class="mbar"><span></span></div>
+</div>
+</div>
+</div>
   </div>
 </div>
 
@@ -228,30 +260,31 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
     <h2 class="sec-title">Por onde você<br>quer começar?</h2>
     <p class="sec-desc">Recursos criados por quem constrói produtos de IA no dia a dia e ensina quem está chegando em produto.</p>
     <div class="home-grid">
-      <div class="home-card" onclick="navTo('kit')">
+      <div class="home-card" style="--bar-color:#0f766e" onclick="navTo('kit')">
         <div class="home-card-icon">⚡</div>
         <div class="home-card-label">Gratuito · Sempre</div>
         <div class="home-card-title">Starter Kit</div>
         <div class="home-card-desc">Templates e prompts de IA para as primeiras etapas da sua jornada em produto.</div>
         <div class="home-card-cta">Acessar grátis →</div>
       </div>
-      <div class="home-card" onclick="navTo('pro')">
-        <div class="home-card-icon">✦</div>
-        <div class="home-card-label">Produto digital · R$ 57</div>
+      <div class="home-card" style="--bar-color:#c2410c" onclick="navTo('pro')">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <div class="home-card-icon" style="margin-bottom:0">✦</div>
+          <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;letter-spacing:0.08em;text-transform:uppercase">Novo</span>
+        </div>
+        <div class="home-card-label">Produto digital · R$ 37</div>
         <div class="home-card-title">Kit PRO</div>
         <div class="home-card-desc">6 módulos avançados, 60+ materiais, templates preenchidos e trilha de 30 dias.</div>
-        <div class="home-card-cta" style="opacity:0.5;cursor:default">Ver Kit PRO
-      <span style="margin-left:6px;background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;letter-spacing:0.05em;text-transform:uppercase">Em breve</span>
-    </div>
+        <div class="home-card-cta">Ver Kit PRO →</div>
       </div>
-      <div class="home-card" onclick="window.open('https://wa.me/5511973618646?text=Oi%20Thais!%20Vi%20seu%20PM%20Starter%20Kit%20e%20tenho%20interesse%20na%20mentoria.%20Pode%20me%20contar%20mais%20sobre%20como%20funciona%20e%20os%20pr%C3%B3ximos%20passos%3F','_blank')">
+      <div class="home-card" style="--bar-color:#25D366" onclick="window.open('https://wa.me/5511973618646?text=Oi%20Thais!%20Vi%20seu%20PM%20Starter%20Kit%20e%20tenho%20interesse%20na%20mentoria.%20Pode%20me%20contar%20mais%20sobre%20como%20funciona%20e%20os%20pr%C3%B3ximos%20passos%3F','_blank')">
         <div class="home-card-icon">◇</div>
         <div class="home-card-label">1:1 · WhatsApp</div>
         <div class="home-card-title">Mentoria</div>
         <div class="home-card-desc">4 sessões personalizadas para transição de carreira ou crescimento em produto com IA.</div>
         <div class="home-card-cta" style="color:#25D366">Falar pelo WhatsApp →</div>
       </div>
-      <div class="home-card" onclick="navTo('portfolio')">
+      <div class="home-card" style="--bar-color:#78716c" onclick="navTo('portfolio')">
         <div class="home-card-icon">◎</div>
         <div class="home-card-label">Trajetória</div>
         <div class="home-card-title">Portfólio</div>
@@ -289,14 +322,14 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
       <a href="prd-basico.html" class="tpl-card" data-cat="entrega" style="text-decoration:none;color:inherit"><div class="tpl-icon">📝</div><div class="tpl-name">PRD básico</div><div class="tpl-desc">Documento de requisitos de produto simplificado</div><div style="font-size:12px;color:var(--accent);font-weight:600;margin-top:10px">Acessar →</div></a>
       <a href="user-story.html" class="tpl-card" data-cat="entrega" style="text-decoration:none;color:inherit"><div class="tpl-icon">✅</div><div class="tpl-name">User Story</div><div class="tpl-desc">Formato padrão com critérios de aceite</div><div style="font-size:12px;color:var(--accent);font-weight:600;margin-top:10px">Acessar →</div></a>
       <a href="sintese-entrevistas.html" class="tpl-card" data-cat="prompts" style="text-decoration:none;color:inherit"><div class="tpl-icon">🤖</div><div class="tpl-name">Síntese de entrevistas</div><div class="tpl-desc">Prompts para extrair insights de transcrições com IA</div><div style="font-size:12px;color:var(--accent);font-weight:600;margin-top:10px">Acessar →</div></a>
-      <a href="gerador-hipoteses.html" class="tpl-card" data-cat="prompts" style="text-decoration:none;color:inherit"><div class="tpl-icon">🤖</div><div class="tpl-name">Gerador de hipóteses</div><div class="tpl-desc">Prompts para levantar hipóteses de produto com Claude</div><div style="font-size:12px;color:var(--accent);font-weight:600;margin-top:10px">Acessar →</div></a>
+      <a href="gerador-hipoteses.html" class="tpl-card" data-cat="prompts" style="text-decoration:none;color:inherit"><div class="tpl-icon">💡</div><div class="tpl-name">Gerador de hipóteses</div><div class="tpl-desc">Prompts para levantar hipóteses de produto com Claude</div><div style="font-size:12px;color:var(--accent);font-weight:600;margin-top:10px">Acessar →</div></a>
     </div>
     <div class="upsell">
       <div>
         <h3>Quer ir além dos básicos?</h3>
         <p>O Kit PRO traz 60+ materiais avançados, templates preenchidos com exemplos reais e trilha de 30 dias.</p>
       </div>
-      <button class="btn-primary" onclick="navTo('pro')">Ver Kit PRO — R$ 57 →</button>
+      <button class="btn-primary" onclick="navTo('pro')">Ver Kit PRO — R$ 37 →</button>
     </div>
   </div>
 </div>
@@ -311,23 +344,22 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
       <h2 class="sec-title">O que PMs sêniores<br>sabem que você <em>ainda não</em></h2>
       <p class="sec-desc" style="margin-bottom:20px">Não é sobre conhecer os frameworks. É sobre saber quando usá-los, por que às vezes ignorá-los e como tomar decisões com confiança — mesmo sem ter todas as respostas.</p>
       <div class="pro-price-block">
-        <span style="display:inline-flex;align-items:center;gap:10px;font-family:'Lora',serif;font-size:28px;font-weight:700;color:var(--ink3)">Em breve
-          <span style="font-size:12px;font-family:'DM Sans',sans-serif;background:#fff7ed;color:#c2410c;border:1px solid rgba(194,65,12,0.2);padding:4px 12px;border-radius:20px;font-weight:600;letter-spacing:0.04em">Em desenvolvimento</span>
-        </span>
+        <span class="pro-old" style="font-size:22px;color:var(--ink3);text-decoration:line-through">R$ 97</span>
+        <span class="pro-price" style="font-family:'Lora',serif;font-size:56px;font-weight:700;color:var(--ink);letter-spacing:-0.03em;line-height:1">R$ 37</span>
+        <span class="pro-note" style="font-size:13px;color:var(--ink3)">· valor de lançamento · acesso vitalício</span>
       </div>
-      <button disabled style="width:100%;padding:14px;border-radius:10px;background:#e7e5e4;color:#a8a29e;font-size:14px;font-weight:600;border:none;cursor:not-allowed;font-family:inherit;margin-bottom:8px">Disponível em breve</button>
-      <div style="font-size:12px;color:var(--ink3);margin-top:8px">Cadastre seu email abaixo para ser avisada quando lançar</div>
-      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
-        <input type="email" placeholder="seu@email.com" style="flex:1;min-width:200px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--r);font-size:13px;font-family:inherit;background:var(--surface);color:var(--ink);outline:none" />
-        <button onclick="this.textContent='✓ Avisarei você!';this.style.background='#0f766e'" style="padding:10px 18px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s">Avise-me</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+        <a href="https://pay.kiwify.com.br/11ucrEb" target="_blank" class="btn-primary" style="font-size:15px;padding:14px 32px">Comprar Kit PRO — R$ 37 →</a>
+        <a href="kit-pro.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;padding:14px 24px;border-radius:var(--r);background:transparent;color:var(--ink2);border:1px solid var(--border);text-decoration:none;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ink2)'">Ver conteúdo completo →</a>
       </div>
+      <div style="font-size:12px;color:var(--ink3);margin-top:4px">Pix e cartão · Acesso imediato · Garantia de 7 dias</div>
     </div>
     <div class="callout callout-warm" style="margin-bottom:32px">
       <strong>Por que a maioria dos materiais de produto não funciona na prática?</strong> Porque ensinam o framework, não o julgamento. Todo PM sabe o que é RICE. Poucos sabem quando o RICE vai te enganar. Este kit foi construído por quem já errou essas decisões — e aprendeu do jeito caro.
     </div>
     <div class="sec-label" style="margin-bottom:16px">6 módulos · 60+ materiais</div>
     <div>
-      <div class="module open" onclick="toggleMod(this)">
+      <div class="module open" style="--mod-color:#78716c" onclick="toggleMod(this)">
         <div class="module-header"><span class="module-num">01</span><span class="module-name">Mentalidade de produto — o que ninguém ensina no início</span><span class="module-count">6 guias</span><span class="module-arrow">▶</span></div>
         <div class="module-body">
           <div class="module-item">A diferença entre gerenciar features e resolver problemas — por que PMs iniciantes confundem os dois</div>
@@ -338,7 +370,7 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
           <div class="module-item">Glossário completo de produto e IA para PMs não-técnicos — LLM, RAG, fine-tuning, agente, API em português claro</div>
         </div>
       </div>
-      <div class="module" onclick="toggleMod(this)">
+      <div class="module" style="--mod-color:#0f766e" onclick="toggleMod(this)">
         <div class="module-header"><span class="module-num">02</span><span class="module-name">Discovery que gera decisão, não apresentação</span><span class="module-count">12 templates</span><span class="module-arrow">▶</span></div>
         <div class="module-body">
           <div class="module-item">Como conduzir entrevistas que revelam o problema real — roteiro com perguntas que desbloqueiam o que o usuário não diz diretamente</div>
@@ -350,7 +382,7 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
           <div class="module-item">50+ prompts de IA para discovery — síntese de entrevistas, hipóteses, análise de concorrentes, mapa de empatia</div>
         </div>
       </div>
-      <div class="module" onclick="toggleMod(this)">
+      <div class="module" style="--mod-color:#b45309" onclick="toggleMod(this)">
         <div class="module-header"><span class="module-num">03</span><span class="module-name">Priorização — a arte de dizer não com dados</span><span class="module-count">10 templates</span><span class="module-arrow">▶</span></div>
         <div class="module-body">
           <div class="module-item">RICE, ICE e MoSCoW: quando usar cada um, quando nenhum funciona e o que fazer nesse caso</div>
@@ -361,7 +393,7 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
           <div class="module-item">Prompts de IA para priorização assistida e argumentação para a liderança</div>
         </div>
       </div>
-      <div class="module" onclick="toggleMod(this)">
+      <div class="module" style="--mod-color:#0f766e" onclick="toggleMod(this)">
         <div class="module-header"><span class="module-num">04</span><span class="module-name">Entrega — do PRD ao deploy sem retrabalho</span><span class="module-count">12 templates</span><span class="module-arrow">▶</span></div>
         <div class="module-body">
           <div class="module-item">PRD completo preenchido com exemplo real — com anotações explicando por que cada campo existe</div>
@@ -372,7 +404,7 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
           <div class="module-item">Prompts de IA para user stories, critérios de aceite, detalhamento técnico e documentação</div>
         </div>
       </div>
-      <div class="module" onclick="toggleMod(this)">
+      <div class="module" style="--mod-color:#b45309" onclick="toggleMod(this)">
         <div class="module-header"><span class="module-num">05</span><span class="module-name">Métricas — o que medir e por que a maioria mede errado</span><span class="module-count">8 templates</span><span class="module-arrow">▶</span></div>
         <div class="module-body">
           <div class="module-item">North Star Metric vs KPIs vs OKRs — como os três se relacionam e por que confundi-los é o erro mais caro</div>
@@ -382,7 +414,7 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
           <div class="module-item">Prompts de IA para métricas, análise de comportamento e relatórios para liderança</div>
         </div>
       </div>
-      <div class="module" onclick="toggleMod(this)">
+      <div class="module" style="--mod-color:#c2410c" onclick="toggleMod(this)">
         <div class="module-header"><span class="module-num">06</span><span class="module-name">IA aplicada a produto — do prompting ao agente</span><span class="module-count">15+ prompts avançados</span><span class="module-arrow">▶</span></div>
         <div class="module-body">
           <div class="module-item">Como usar IA no seu dia a dia sem virar dependente dela — o equilíbrio entre velocidade e julgamento</div>
@@ -394,14 +426,44 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
         </div>
       </div>
     </div>
-    <div class="guarantee">
-      <div class="guarantee-icon">🛡️</div>
-      <div>
-        <h4>Garantia de 7 dias</h4>
-        <p>Se você abrir o kit e sentir que não valeu, devolvo o valor integral. Sem formulário, sem pergunta. É só falar pelo WhatsApp.</p>
-      </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <a href="https://pay.kiwify.com.br/11ucrEb" target="_blank" class="btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:16px">Comprar Kit PRO — R$ 37 →</a>
     </div>
-    <button disabled style="width:100%;padding:16px;border-radius:var(--r);background:#e7e5e4;color:#a8a29e;font-size:15px;font-weight:600;border:none;cursor:not-allowed;font-family:inherit;margin-bottom:24px">Disponível em breve</button>
+    <div style="text-align:center;font-size:12px;color:var(--ink3);margin-bottom:32px">Pix e cartão · Acesso imediato · Garantia de 7 dias · <a href="kit-pro.html" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">Preview do conteúdo →</a></div>
+
+    <hr>
+
+    <div class="sec-label" style="margin-bottom:6px">Incluído no Kit PRO</div>
+    <h3 style="font-family:'Lora',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:10px">Materiais exclusivos disponíveis agora</h3>
+    <p style="font-size:14px;color:var(--ink3);margin-bottom:28px;line-height:1.75">Templates preenchíveis, guias seniores e prompts avançados — tudo acessível logo após a compra.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:44px">
+      <a href="pm-dados-ia.html" target="_blank" style="text-decoration:none;display:block">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow);height:100%;transition:all 0.2s" onmouseover="this.style.boxShadow='var(--shadow-lg)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='var(--shadow)';this.style.transform='none'">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span style="background:var(--accent);color:#fff;padding:1px 7px;border-radius:20px;font-size:9px">PRO</span> Dados &amp; IA</div>
+          <div style="font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.3">PM Orientado a Dados na Era da IA</div>
+          <p style="font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:14px">Os 4 níveis de maturidade em dados, framework de decisão e as métricas que todo PM precisa dominar.</p>
+          <div style="font-size:12px;font-weight:600;color:var(--accent)">Ler agora →</div>
+        </div>
+      </a>
+      <a href="agentes-ia-produto.html" target="_blank" style="text-decoration:none;display:block">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow);height:100%;transition:all 0.2s" onmouseover="this.style.boxShadow='var(--shadow-lg)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='var(--shadow)';this.style.transform='none'">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span style="background:var(--accent);color:#fff;padding:1px 7px;border-radius:20px;font-size:9px">PRO</span> IA Aplicada</div>
+          <div style="font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.3">Agentes de IA como Produto</div>
+          <p style="font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:14px">O que muda quando o produto é um agente — LLM, RAG, evals, métricas e como fazer discovery para IA.</p>
+          <div style="font-size:12px;font-weight:600;color:var(--accent)">Ler agora →</div>
+        </div>
+      </a>
+      <a href="discovery-aumentado-ia.html" target="_blank" style="text-decoration:none;display:block">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow);height:100%;transition:all 0.2s" onmouseover="this.style.boxShadow='var(--shadow-lg)';this.style.transform='translateY(-2px)'" onmouseout="this.style.boxShadow='var(--shadow)';this.style.transform='none'">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:6px"><span style="background:var(--accent);color:#fff;padding:1px 7px;border-radius:20px;font-size:9px">PRO</span> Discovery &amp; IA</div>
+          <div style="font-family:'Lora',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:8px;line-height:1.3">Discovery Aumentado por IA</div>
+          <p style="font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:14px">As 4 fontes de sinal, o ciclo de discovery em 4 fases e como triangular dados com IA.</p>
+          <div style="font-size:12px;font-weight:600;color:var(--accent)">Ler agora →</div>
+        </div>
+      </a>
+    </div>
+
     <hr>
     <div class="sec-label" style="margin-bottom:12px">Dúvidas antes de comprar?</div>
     <a href="https://wa.me/5511973618646?text=Oi%20Thais!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Kit%20PRO%20antes%20de%20comprar." target="_blank" class="wabtn" style="display:inline-flex;margin-bottom:48px">
@@ -509,11 +571,6 @@ hr{border:none;border-top:1px solid var(--border);margin:36px 0}
       <div class="exp-company" style="display:flex;align-items:center;gap:8px">PM Starter Kit <span class="tag-warm" style="font-size:10px">produto próprio</span></div>
       <div class="exp-title">Recurso gratuito com tração orgânica</div>
       <div class="exp-desc">Criei e lancei um site gratuito com templates e prompts de IA para PMs iniciantes, gerando engajamento orgânico expressivo e demanda espontânea por mentoria paga.</div>
-      <div class="exp-metrics">
-        <div><div class="metric-val">239</div><div class="metric-label">curtidas no post</div></div>
-        <div><div class="metric-val">65</div><div class="metric-label">comentários</div></div>
-        <div><div class="metric-val">2</div><div class="metric-label">mentorias espontâneas</div></div>
-      </div>
       <div style="margin-top:12px"><span class="exp-tag">Produto próprio</span><span class="exp-tag">Growth orgânico</span><span class="exp-tag">IA</span></div>
     </div>
 
