@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agentes de IA na Prática — do Diagnóstico ao PRD — Kit PRO</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1917;--ink2:#44403c;--ink3:#78716c;--paper:#fafaf8;--cream:#f5f0e8;--cream2:#ede8df;--accent:#c2410c;--accent-dim:#fff7ed;--accent-border:rgba(194,65,12,0.2);--teal:#0f766e;--teal-dim:#f0fdfa;--border:#e7e5e4;--surface:#fff;--r:10px;--r-lg:16px;--shadow:0 2px 12px rgba(28,25,23,0.07);--shadow-lg:0 4px 28px rgba(28,25,23,0.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#1c1917;color:var(--ink);line-height:1.65}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:#1c1917;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:'Lora',serif;font-size:15px;font-weight:700;color:#fff;text-decoration:none}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:13px;color:rgba(255,255,255,0.55);text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:40px;border:1px solid rgba(255,255,255,0.12)}.nav-back:hover{color:#fff}
+.nav-pro-badge{font-size:10px;font-weight:700;background:var(--accent);color:#fff;padding:3px 10px;border-radius:20px;letter-spacing:0.06em}
+.content{background:var(--paper);margin-top:56px;min-height:calc(100vh - 56px)}
+.wrap{max-width:800px;margin:0 auto;padding:0 24px 80px}
+.page-header{padding:56px 0 40px;border-bottom:1px solid var(--border);margin-bottom:44px}
+.pro-badge-header{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px}
+.cat-tag{font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:'Lora',serif;font-size:clamp(26px,4vw,40px);font-weight:700;color:var(--ink);line-height:1.15;letter-spacing:-0.01em;margin-bottom:12px}
+.page-desc{font-size:16px;color:var(--ink3);line-height:1.75;font-weight:300}
+h2{font-family:'Lora',serif;font-size:21px;font-weight:700;color:var(--ink);margin:44px 0 14px;padding-top:44px;border-top:1px solid var(--cream2)}
+h2:first-of-type{border-top:none;padding-top:0;margin-top:4px}
+h3{font-size:16px;font-weight:700;color:var(--ink);margin:24px 0 10px}
+p{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:14px}
+strong{color:var(--ink);font-weight:600}
+ul,ol{padding-left:20px;margin-bottom:14px}
+li{font-size:14px;color:var(--ink2);line-height:1.8;margin-bottom:6px}
+.callout{border-radius:var(--r-lg);padding:18px 22px;margin:20px 0;font-size:14px;line-height:1.75}
+.callout-warm{background:var(--accent-dim);border-left:3px solid var(--accent);color:#7c2d12}
+.callout-teal{background:var(--teal-dim);border-left:3px solid var(--teal);color:#134e4a}
+.callout-ink{background:#1c1917;border-left:3px solid var(--accent);color:rgba(255,255,255,0.85);border-radius:var(--r-lg);padding:20px 24px;margin:20px 0;font-size:14px;line-height:1.75}
+/* TEMPLATE BLOCKS */
+.tpl-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin:20px 0;overflow:hidden;box-shadow:var(--shadow)}
+.tpl-header{background:var(--cream);padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.tpl-step-num{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase}
+.tpl-step-name{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--ink)}
+.tpl-row{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:12px 20px;border-bottom:1px solid var(--cream2);align-items:start}
+.tpl-row:last-child{border-bottom:none}
+.tpl-label{font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);padding-top:2px}
+.tpl-value{font-size:14px;color:var(--ink2);line-height:1.65}
+.tpl-input{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--ink);background:var(--paper);resize:vertical;min-height:40px;outline:none;transition:border-color 0.15s}
+.tpl-input:focus{border-color:var(--accent)}
+/* AI PROMPTS */
+.ai-box{background:#f0fdf4;border:1px solid rgba(15,118,110,0.25);border-radius:var(--r-lg);margin:24px 0;overflow:hidden}
+.ai-header{background:rgba(15,118,110,0.1);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(15,118,110,0.15)}
+.ai-header-label{font-size:12px;font-weight:700;color:var(--teal);letter-spacing:0.05em;text-transform:uppercase}
+.ai-tip{padding:14px 18px;font-size:14px;color:#134e4a;line-height:1.7;border-bottom:1px solid rgba(15,118,110,0.1)}
+.prompt-block{background:#0d1a0f;border-radius:var(--r-lg);margin:16px 18px;overflow:hidden}
+.prompt-label{background:rgba(15,118,110,0.2);padding:8px 14px;font-size:11px;font-weight:700;color:#6ee7b7;letter-spacing:0.08em;text-transform:uppercase}
+.prompt-body{padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#a7f3d0;line-height:1.75;white-space:pre-wrap}
+.prompt-var{color:#fb923c}
+/* PRINT */
+.print-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;margin-bottom:28px}
+.print-btn:hover{background:#44403c}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin:20px 0}
+thead{background:var(--cream)}
+th{padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink3);border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--cream2);color:var(--ink2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tag-teal{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--teal-dim);color:var(--teal)}
+.tag-warm{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--accent-dim);color:var(--accent)}
+.tag-low{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:#fee2e2;color:#991b1b}
+.score-high{color:#166534;font-weight:700}.score-mid{color:#854d0e;font-weight:600}.score-low{color:#991b1b;font-weight:600}
+/* PRINT STYLES */
+@media print{
+  .nav,.print-btn,.ai-box{display:none!important}
+  body{background:#fff}
+  .content{margin-top:0}
+  .tpl-input{border:1px solid #ccc;background:#fff}
+  h2{page-break-before:auto}
+  .tpl-block{page-break-inside:avoid}
+}
+@media(max-width:640px){.wrap{padding:0 16px}.tpl-row{grid-template-columns:1fr}.nav{padding:0 16px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async function() {
+  const _sb = supabase.createClient('https://uzocrlrvozpcbzkzbund.supabase.co', 'sb_publishable_qzHEgA53ylu6k0V_cvIaEQ_25SvQioC');
+  const { data: { session } } = await _sb.auth.getSession();
+  if (!session) window.location.href = 'login.html';
+  window._sb = _sb;
+})();
+</script>
+</head>
+<body>
+<nav class="nav">
+  <a href="kit-pro.html" class="nav-logo">PM<span>.</span>starterkit</a>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="nav-pro-badge">KIT PRO</span>
+    <a href="kit-pro.html" class="nav-back">← Voltar ao Kit PRO</a>
+  </div>
+</nav>
+<div class="content">
+<div class="wrap">
+  <div class="page-header">
+    <div class="pro-badge-header">
+      <span style="background:#c2410c;color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.08em;text-transform:uppercase">KIT PRO · EXCLUSIVO</span>
+      <span class="cat-tag">Módulo 07 · Agentes de IA</span>
+    </div>
+    <h1>Agentes de IA na Prática — do Diagnóstico ao PRD</h1>
+    <p class="page-desc">O processo que uso em consultorias de agentes de IA na AI Factory: como diagnosticar se o problema pede um agente, rodar discovery em formato hackathon e escrever um PRD que engenharia consegue construir. Sem hype — com critérios.</p>
+  </div>
+
+<div class="callout callout-warm"><strong>Por que este material existe:</strong> quase todo cliente chega pedindo "um agente de IA". Na prática, metade dos casos se resolve com automação simples e a outra metade precisa de um agente muito diferente do que foi pedido. O trabalho do PM aqui é menos construir e mais diagnosticar. Este guia é o processo completo desse diagnóstico.</div>
+
+<h2>Parte 1 — O filtro de 3 perguntas</h2>
+<p>Antes de qualquer linha de código, qualquer proposta e qualquer estimativa, eu aplico este filtro. Ele já matou mais ideias do que aprovou — e é exatamente por isso que funciona.</p>
+
+<h3>Pergunta 1 — Qual decisão hoje depende de uma pessoa gargalo?</h3>
+<p>Agente existe para <strong>tomar decisões em escala</strong>, não para executar tarefas repetitivas. Se ninguém no processo trava esperando uma decisão humana (classificar, priorizar, responder, escolher), você não precisa de um agente. Precisa de automação.</p>
+
+<h3>Pergunta 2 — O erro é tolerável?</h3>
+<p>Agente erra. Sempre. A pergunta certa não é "como impedir o erro" e sim "o que acontece quando errar". Se o processo não aceita erro nenhum (financeiro, jurídico, segurança), IA generativa não deve estar sozinha no caminho crítico — no máximo como sugestão com revisão humana.</p>
+
+<h3>Pergunta 3 — Dá para testar em uma semana?</h3>
+<p>Se o caso de uso não permite um protótipo feio testado com usuário real em uma semana, o escopo está grande demais. Quebre até caber. Projetos de agente que começam grandes morrem grandes.</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Tabela de decisão</span><span class="tpl-step-name">Agente, automação ou um bom prompt?</span></div>
+  <div class="tpl-row"><div class="tpl-label">Use automação</div><div class="tpl-value">Regras claras, entrada previsível, zero julgamento. Ex.: mover dados entre sistemas, disparar e-mail quando status muda. Mais barato, mais confiável, sem erro de IA.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Use um bom prompt</div><div class="tpl-value">Tarefa pontual de julgamento, feita por uma pessoa, sem integração. Ex.: resumir reunião, redigir resposta. Um prompt salvo resolve — não precisa de produto.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Use um agente</div><div class="tpl-value">Decisão recorrente em escala + julgamento contextual + ações em sistemas (consultar, classificar, responder, executar) + erro tolerável ou revisável. Só aqui o custo de construir e manter se justifica.</div></div>
+</div>
+
+<div class="callout callout-teal"><strong>Exemplo real de diagnóstico:</strong> cliente pediu "um agente para responder clientes no WhatsApp". Ao aplicar o filtro, a decisão gargalo era outra: 70% das mensagens eram sobre status de pedido — resolvível com automação + consulta ao sistema, sem IA. O agente ficou só para os 30% que exigiam interpretação. Metade do custo, o dobro da confiabilidade.</div>
+
+<h2>Parte 2 — Discovery de casos de uso em formato hackathon</h2>
+<p>Quando o cliente (ou stakeholder interno) chega com a solução pronta na cabeça, discovery tradicional trava. O formato hackathon com design thinking tira todo mundo do "que agente queremos" e leva para "qual problema dói". Roteiro de meio dia, testado em consultorias:</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Roteiro · 4h</span><span class="tpl-step-name">Dinâmica de discovery de casos de uso de IA</span></div>
+  <div class="tpl-row"><div class="tpl-label">0:00 · Imersão</div><div class="tpl-value">Cada área mapeia seu fluxo real de trabalho em post-its: onde alguém espera, retrabalha ou decide no escuro. Regra: proibido falar "IA" ou "agente" nesta etapa.</div></div>
+  <div class="tpl-row"><div class="tpl-label">0:45 · Definição</div><div class="tpl-value">Transformar as dores em perguntas "Como poderíamos..." (How Might We). Agrupar por decisão gargalo — quem trava esperando o quê.</div></div>
+  <div class="tpl-row"><div class="tpl-label">1:30 · Ideação</div><div class="tpl-value">Agora sim: para cada HMW, ideias livres de solução — com IA ou sem. Forçar pelo menos uma solução sem IA por grupo (é o teste de honestidade do caso de uso).</div></div>
+  <div class="tpl-row"><div class="tpl-label">2:15 · Priorização</div><div class="tpl-value">Matriz de 2 eixos: valor da decisão automatizada × tolerância a erro. Canto superior direito (alto valor + erro tolerável) é o único quadrante que vira protótipo.</div></div>
+  <div class="tpl-row"><div class="tpl-label">2:45 · Protótipo</div><div class="tpl-value">Protótipo de prompt: simular o agente num chat com 5 casos reais colados da operação. Feio, rápido, sem código.</div></div>
+  <div class="tpl-row"><div class="tpl-label">3:30 · Teste e decisão</div><div class="tpl-value">Quem faz o trabalho hoje avalia as respostas: usaria? confiaria? Sai da sala com 1 caso de uso aprovado, dono definido e critério de sucesso rascunhado.</div></div>
+</div>
+
+<div class="callout callout-warm"><strong>O detalhe que muda tudo:</strong> o protótipo de prompt na etapa 5 usa dados reais da operação (anonimizados). É nesse momento que o caso de uso "genial" quebra na frente de todo mundo — ou prova valor. Muito mais barato descobrir isso em 4 horas do que em 4 sprints.</div>
+
+<h2>Parte 3 — PRD de agente de IA, preenchido</h2>
+<p>O PRD de agente tem campos que o PRD de feature tradicional não tem: comportamento esperado, política de escalação, guardrails e tolerância a erro. Abaixo, o template preenchido com um exemplo realista de agente de triagem de suporte B2B.</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">Template preenchido</span><span class="tpl-step-name">PRD — Agente de triagem de tickets de suporte B2B</span></div>
+  <div class="tpl-row"><div class="tpl-label">Problema</div><div class="tpl-value">Time de suporte gasta 2h/dia classificando e roteando ~120 tickets. Tickets urgentes esperam até 4h na fila junto com dúvidas simples. CSAT caindo por tempo de primeira resposta.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Por que um agente</div><div class="tpl-value">Passou no filtro: decisão gargalo (classificar e priorizar) recorrente e em escala; erro tolerável (ticket mal roteado é re-roteado por humano, sem dano ao cliente); testável em 1 semana com histórico de tickets.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que o agente faz</div><div class="tpl-value">Lê o ticket, classifica em 6 categorias, atribui prioridade (P1-P3), roteia para a fila certa e sugere uma primeira resposta para o atendente revisar.</div></div>
+  <div class="tpl-row"><div class="tpl-label">O que NÃO faz</div><div class="tpl-value">Não responde o cliente diretamente. Não fecha tickets. Não trata temas jurídicos ou de cancelamento — esses vão direto para humano (guardrail determinístico, não decisão do modelo).</div></div>
+  <div class="tpl-row"><div class="tpl-label">Contexto e dados</div><div class="tpl-value">Acesso: histórico do cliente (read-only), base de conhecimento, últimos 50 tickets similares. Sem acesso a dados de pagamento.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Escalação</div><div class="tpl-value">Confiança abaixo do limiar, cliente com contrato enterprise, palavra-chave sensível ou 2ª reabertura → fila humana com contexto resumido pelo agente.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Critérios de aceite</div><div class="tpl-value">Ver Parte 4 — definidos como limiares sobre conjunto de avaliação, não como Given-When-Then binário.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Métricas</div><div class="tpl-value">Precisão de classificação ≥ 90% · tempo de 1ª resposta −50% · taxa de re-roteamento humano ≤ 8% · custo por ticket triado · % de sugestões de resposta aceitas sem edição.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Rollout</div><div class="tpl-value">Semana 1-2: shadow mode (agente classifica, humano não vê, comparamos). Semana 3: 20% dos tickets com revisão. Semana 5+: 100% com amostragem de auditoria. Rollback: desligar roteamento, manter sugestão.</div></div>
+</div>
+
+<h2>Parte 4 — Critérios de aceite para comportamento não determinístico</h2>
+<p>Given-When-Then tradicional assume que a mesma entrada gera a mesma saída. Agente não funciona assim: a resposta certa tem mais de uma forma. A solução é definir "funciona" como <strong>limiares sobre um conjunto de avaliação</strong> + <strong>regras invioláveis</strong>.</p>
+
+<div class="tpl-block">
+  <div class="tpl-header"><span class="tpl-step-num">5 padrões</span><span class="tpl-step-name">Como escrever critérios de aceite para agentes</span></div>
+  <div class="tpl-row"><div class="tpl-label">Limiar sobre eval</div><div class="tpl-value">"Em um conjunto de 200 tickets reais rotulados, classifica corretamente ≥ 90%." O conjunto de avaliação é parte do critério — sem ele, não há aceite.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Regra inviolável</div><div class="tpl-value">"NUNCA envia resposta ao cliente sem revisão humana" — implementada como restrição de sistema (o agente não tem essa ação disponível), não como instrução no prompt.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Formato</div><div class="tpl-value">"Toda saída segue o schema JSON definido; saída fora do schema é rejeitada e re-tentada, nunca exibida." Formato é o critério mais barato de validar — automatize.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Escalação correta</div><div class="tpl-value">"Nos 40 casos sensíveis do conjunto de teste, escala para humano em 100% deles." Errar escalação é o erro mais caro — merece critério próprio e limiar mais duro.</div></div>
+  <div class="tpl-row"><div class="tpl-label">Degradação</div><div class="tpl-value">"Com sistema de contexto indisponível, o agente reconhece a limitação e roteia para humano — não inventa resposta." Teste de falha faz parte do aceite.</div></div>
+</div>
+
+<h2>Parte 5 — Métricas de agentes em produção</h2>
+<p>Três famílias, sempre juntas. Reportar só uma delas é como reportar velocity sem qualidade.</p>
+<ul>
+<li><strong>Qualidade:</strong> taxa de resolução/acerto contra amostra auditada, taxa de re-trabalho humano, % de saídas aceitas sem edição.</li>
+<li><strong>Custo:</strong> custo por tarefa concluída (não por chamada de API), comparado ao custo da mesma tarefa feita por humano. É o número que a liderança quer ver.</li>
+<li><strong>Confiança:</strong> taxa de escalação (nem alta demais — agente inútil — nem baixa demais — agente arriscado), feedback de quem revisa, incidentes por semana.</li>
+</ul>
+<div class="callout callout-teal"><strong>Regra de reporte:</strong> demo impressiona, produção paga. Todo report para stakeholder compara mês atual vs anterior nas 3 famílias, com 2-3 exemplos reais de erro e o que foi ajustado. Esconder o erro destrói a confiança no programa de IA inteiro.</div>
+
+<h2>Parte 6 — Erros que já vi em consultorias de agentes</h2>
+<div class="callout callout-ink">
+<strong>Começar pela solução:</strong> "queremos um agente" antes de saber qual decisão gargalo ele resolve. É o erro nº 1 — o filtro da Parte 1 existe para ele.<br><br>
+<strong>Piloto sem dono:</strong> agente sem um humano responsável pela qualidade vira órfão em 2 meses. Todo agente tem um dono de produto, como qualquer feature.<br><br>
+<strong>Aceite sem conjunto de avaliação:</strong> "parece bom" não é critério. Sem eval rotulado, cada ajuste de prompt é um chute no escuro.<br><br>
+<strong>Medir a demo, não a produção:</strong> acurácia em 10 exemplos escolhidos a dedo não prevê comportamento com dados reais e adversariais.<br><br>
+<strong>Escopo infinito:</strong> agente que "faz tudo" não passa em nenhum critério de aceite. Um agente, uma decisão, um fluxo.<br><br>
+<strong>Ignorar custo por tarefa:</strong> agente que resolve o ticket por R$ 4 quando o humano custa R$ 3 não é automação, é prejuízo com marketing.
+</div>
+
+<div class="ai-box">
+  <div class="ai-header"><span style="font-size:18px">&#129302;</span><span class="ai-header-label">IA na prática — rodar o filtro de 3 perguntas</span></div>
+  <div class="ai-tip">Use este prompt para estressar um caso de uso de agente antes de levar para o time ou para o cliente.</div>
+  <div class="prompt-block">
+    <div class="prompt-label">Prompt — diagnóstico de caso de uso de agente</div>
+    <div class="prompt-body">Atue como um consultor cético de produtos de IA. Vou descrever um caso de uso de agente e quero que você tente derrubá-lo.
+
+Caso de uso: <span class="prompt-var">[descreva o agente proposto]</span>
+Processo atual: <span class="prompt-var">[como é feito hoje, por quem, volume]</span>
+Consequência de um erro: <span class="prompt-var">[o que acontece se o agente errar]</span>
+
+Responda:
+1. Qual é a decisão gargalo aqui? Ela realmente depende de julgamento, ou é regra?
+2. Isso se resolveria com automação simples ou um prompt salvo? Como?
+3. O erro é tolerável? Em quais cenários NÃO é?
+4. Qual seria o menor protótipo testável em 1 semana?
+5. Veredito: agente, automação, prompt — ou não fazer nada. Justifique.</div>
+  </div>
+</div>
+
+</div>
+</div>
+<footer style="text-align:center;padding:48px 24px;border-top:1px solid var(--border);margin-top:40px;background:var(--paper)">
+  <p style="font-size:13px;color:var(--ink3);margin-bottom:12px">Kit PRO · Thais Chehab &middot; PM de Produtos de IA</p>
+  <a href="kit-pro.html" style="color:var(--accent);text-decoration:none;font-weight:600;font-size:14px">← Voltar ao Kit PRO</a>
+</footer>
+</body>
+</html>
